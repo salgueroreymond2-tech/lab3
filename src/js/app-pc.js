@@ -30,27 +30,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // 2. Ingreso Directo por Formulario de Credenciales
   if (formCredenciales) {
+    const USUARIOS_VALIDOS = {
+      "analista@procomer.com": { pass: "1234", role: "admin" },
+      "empresa@zonafranca.cr": { pass: "5678", role: "solicitante" },
+      "gerencia@zonafranca.cr": { pass: "9123", role: "gerente" }
+    };
+
     formCredenciales.addEventListener("submit", (e) => {
       e.preventDefault();
-      const usuario = document.getElementById("usuario").value;
-      const perfil = document.getElementById("perfilAcceso").value;
+      const usuario = document.getElementById("usuario").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const perfilSeleccionado = document.getElementById("perfilAcceso").value;
 
-      localStorage.setItem("zofranca_user", JSON.stringify({
-        usuario,
-        role: perfil,
-        nombre: usuario.split("@")[0] || "Usuario PROCOMER",
-        fecha: new Date().toISOString()
-      }));
+      const cuenta = USUARIOS_VALIDOS[usuario];
 
-      // Redirigir según el perfil seleccionado
-      if (perfil === "admin") {
-        window.location.href = "src/page/analista.html";
-      } else if (perfil === "solicitante") {
-        window.location.href = "src/page/solicitante.html";
-      } else if (perfil === "gerente") {
-        window.location.href = "src/page/gerencia.html";
+      if (cuenta && cuenta.pass === password && cuenta.role === perfilSeleccionado) {
+        localStorage.setItem("zofranca_user", JSON.stringify({
+          usuario: usuario,
+          role: perfilSeleccionado
+        }));
+        window.location.href = "./src/page/index.html";
       } else {
-        window.location.href = "src/page/index.html";
+        alert("Credenciales incorrectas o el perfil seleccionado no corresponde al usuario ingresado.");
       }
     });
   }

@@ -16,9 +16,16 @@ const UMBRALES_REGIMEN = {
 };
 
 document.addEventListener("DOMContentLoaded", () => {
+  const userStr = localStorage.getItem("zofranca_user");
+  if (!userStr) {
+    window.location.href = "../../index.html";
+    return;
+  }
+
   initStorage();
   bindEvents();
   initTabs();
+  initRoleNavigation();
   setupLogout();
   renderApp();
 });
@@ -162,8 +169,8 @@ function initRoleNavigation() {
 
     if (tabCumplimiento) tabCumplimiento.click();
 
-  } else {
-    // Analista PROCOMER (admin): Mantiene visibilidad de todas las pestañas
+  } else if (role === "admin") {
+    // Analista PROCOMER (admin): Muestra todas las pestañas
     if (tabSolicitud) {
       tabSolicitud.classList.remove("hidden");
       tabSolicitud.style.display = "inline-flex";
@@ -180,6 +187,8 @@ function initRoleNavigation() {
       tabAlertas.classList.remove("hidden");
       tabAlertas.style.display = "inline-flex";
     }
+
+    if (tabDashboard) tabDashboard.click();
   }
 }
 
