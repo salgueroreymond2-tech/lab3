@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plataforma PROCOMER - Gestión de Zonas Francas</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="logo-container">
+      <h1>PROCOMER</h1>
+      <p>Sistema Unificado de Zonas Francas Costa Rica</p>
+    </div>
+    <span class="badge badge-system">Asíncrono & Auditables</span>
+  </header>
+
+  <main class="dashboard-grid">
+    
+    <!-- Sección 1: Formulario de Solicitud/Reporte -->
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title">Nueva Solicitud de Régimen</h2>
+      <p class="subtitle">Ingrese los datos requeridos. El procesamiento e inspección con IA se realiza en segundo plano.</p>
+
+      <form id="solicitudForm" class="form-stack" novalidate>
+        <div class="form-group">
+          <label for="empresaNombre">Nombre de la Empresa</label>
+          <input type="text" id="empresaNombre" name="empresaNombre" required placeholder="Ej. TechCorp CR S.A.">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sector">Sector Operativo</label>
+            <select id="sector" name="sector" required>
+              <option value="">Seleccione sector...</option>
+              <option value="Servicios BPO">Servicios BPO / Back-office</option>
+              <option value="Tecnología">Tecnología y Software</option>
+              <option value="Manufactura">Manufactura Avanzada</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="zonaFranca">Zona Franca Destino</label>
+            <select id="zonaFranca" name="zonaFranca" required>
+              <option value="ZF-001">America Free Zone (AFZ)</option>
+              <option value="ZF-002">UltraPARK II</option>
+              <option value="ZF-003">Coyol Free Zone</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inversion">Inversión Proyectada ($ USD)</label>
+            <input type="number" id="inversion" name="inversion" min="1000" required placeholder="1500000">
+          </div>
+
+          <div class="form-group">
+            <label for="empleos">Empleos Directos Proyectados</label>
+            <input type="number" id="empleos" name="empleos" min="1" required placeholder="50">
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn btn-primary">
+          <span class="btn-text">Enviar a Revisión Asíncrona</span>
+          <span class="spinner hidden" aria-hidden="true"></span>
+        </button>
+      </form>
+    </section>
+
+    <!-- Sección 2: Bandeja del Analista (Humano en el Bucle) -->
+    <section class="card" aria-labelledby="analyst-title">
+      <div class="card-header">
+        <h2 id="analyst-title">Bandeja del Analista PROCOMER</h2>
+        <span id="pendingCount" class="counter">0 PENDIENTES</span>
+      </div>
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Empresa</th>
+              <th>Sector</th>
+              <th>Inversión / Empleos</th>
+              <th>Pre-clasificación IA</th>
+              <th>Acción Humana</th>
+            </tr>
+          </thead>
+          <tbody id="solicitudesTableBody">
+            <!-- Filas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Sección 3: Log de Auditoría -->
+    <section class="card card-full" aria-labelledby="audit-title">
+      <h2>Registro Inmutable de Auditoría (Trazabilidad)</h2>
+      <ul id="auditLogList" class="audit-log">
+        <!-- Eventos de auditoría dinámicos -->
+      </ul>
+    </section>
+
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
