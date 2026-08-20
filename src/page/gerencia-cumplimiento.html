@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoFranca CR — Gerencia de Cumplimiento</title>
+  <link rel="stylesheet" href="../styles/das.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="logo-container">
+      <h1>🇨🇷 ZoFranca CR</h1>
+      <p>Portal Gerencia de Cumplimiento — Costa Rica Free Trade Zone Operations</p>
+    </div>
+    <span class="badge badge-system">Acceso Restringido — Gerencia</span>
+  </header>
+
+  <!-- PESTAÑAS DE NAVEGACIÓN (Solo Reporte de Cumplimiento y Panel de Alertas) -->
+  <nav class="nav-tabs">
+    <button class="nav-tab active" data-target="view-cumplimiento">
+      📈 Reporte de Cumplimiento
+    </button>
+    <button class="nav-tab" data-target="view-alertas">
+      ⚠️ Panel de Alertas
+    </button>
+  </nav>
+
+  <main>
+    
+    <!-- PANTALLA 1: REPORTE DE CUMPLIMIENTO -->
+    <div id="view-cumplimiento" class="view-section">
+      <div class="grid-3">
+        <div class="kpi-card">
+          <span class="kpi-title">Inversión Acumulada</span>
+          <span class="kpi-value">$23,037,387 USD</span>
+          <span class="kpi-trend trend-up">102% de la Meta Proyectada</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Empleos Directos Generados</span>
+          <span class="kpi-value">4,836</span>
+          <span class="kpi-trend trend-up">98.4% Meta Ley 7210</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-title">Exportaciones Acumuladas</span>
+          <span class="kpi-value">$194,600,000 USD</span>
+          <span class="kpi-trend trend-up">Sector Dispositivos Médicos #1</span>
+        </div>
+      </div>
+
+      <section class="card">
+        <h2>Reporte de Cumplimiento Trimestral — Ley 7210</h2>
+        <p class="subtitle">Desglose de cumplimiento por empresa en Zona Franca</p>
+
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID Reporte</th>
+                <th>Periodo</th>
+                <th>Empresa</th>
+                <th>Inversión Real</th>
+                <th>Empleos Reales</th>
+                <th>Estado Cumplimiento</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>REP-2026-Q2-001</strong></td>
+                <td>2026-Q2</td>
+                <td>TechServices Latam S.A.</td>
+                <td>$1,650,000 USD</td>
+                <td>125 empleados</td>
+                <td><span class="badge badge-approved">EN CUMPLIMIENTO (100%)</span></td>
+              </tr>
+              <tr>
+                <td><strong>REP-2026-Q2-002</strong></td>
+                <td>2026-Q2</td>
+                <td>GlobalLogix CR S.A.</td>
+                <td>$400,000 USD</td>
+                <td>115 empleados</td>
+                <td><span class="badge badge-pending">ALERTA DESVIACIÓN (-4.1%)</span></td>
+              </tr>
+              <tr>
+                <td><strong>REP-2026-Q2-003</strong></td>
+                <td>2026-Q2</td>
+                <td>BioMed Devices Central</td>
+                <td>$5,200,000 USD</td>
+                <td>340 empleados</td>
+                <td><span class="badge badge-approved">EXCELENCIA OPERATIVA</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+
+    <!-- PANTALLA 2: PANEL DE ALERTAS -->
+    <div id="view-alertas" class="view-section hidden">
+      <div class="dashboard-grid">
+        <section class="card">
+          <h2>Panel de Alertas y Riesgos de Cumplimiento</h2>
+          <p class="subtitle">Detección automática de anomalías y desviaciones tributarias/operativas</p>
+
+          <div class="alert-list">
+            <div class="alert-item alert-severity-medium">
+              <div>
+                <strong>DF-832 — Alerta de Desviación Fiscal</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted);">TechServices Latam S.A. — Exención IVA Art. 17 requiere documentación adicional.</p>
+              </div>
+              <span class="badge badge-pending">ALTA</span>
+            </div>
+            <div class="alert-item alert-severity-medium">
+              <div>
+                <strong>EM-104 — Umbral de Empleos Directos</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted);">GlobalLogix CR S.A. — Empleos reportados 4.1% por debajo de la meta trimestral.</p>
+              </div>
+              <span class="badge badge-pending">MEDIA</span>
+            </div>
+            <div class="alert-item alert-severity-low">
+              <div>
+                <strong>IA-094 — Verificación de Contrato Comercial</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted);">Revisión automática de vencimiento de arrendamiento en AFZ.</p>
+              </div>
+              <span class="badge badge-system">BAJA</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Registro Inmutable de Auditoría (Trazabilidad)</h2>
+          <p class="subtitle">Historial en tiempo real de decisiones y firmas electrónicas</p>
+          <ul id="auditLogList" class="audit-log">
+            <!-- Eventos dinámicos -->
+          </ul>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <script type="module" src="../js/app.js"></script>
+</body>
+</html>

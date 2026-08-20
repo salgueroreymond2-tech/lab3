@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initStorage();
   bindEvents();
   initTabs();
+  setupLogout();
   renderApp();
 });
 
@@ -188,7 +189,8 @@ function setupLogout() {
   if (btnLogout) {
     btnLogout.addEventListener("click", () => {
       localStorage.removeItem("zofranca_user");
-      window.location.href = "/index.html"; // Redirige al login principal
+      // Redirige al login de la raíz (funciona desde /src/page/...)
+      window.location.href = "../../index.html";
     });
   }
 }
