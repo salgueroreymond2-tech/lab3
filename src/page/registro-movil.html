@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoFranca CR - Registro Móvil</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="mobile-card">
+    <h3>Ingreso a ZoFranca CR</h3>
+    <form id="mobileForm">
+      <label for="cedula">Cédula / Identificación:</label>
+      <input type="text" id="cedula" placeholder="1-0000-0000" required>
+
+      <label for="nombre">Nombre Completo:</label>
+      <input type="text" id="nombre" placeholder="Nombre y Apellidos" required>
+
+      <label for="telefono">Teléfono:</label>
+      <input type="tel" id="telefono" placeholder="8888-8888" required>
+
+      <label for="role">Perfil de Acceso:</label>
+      <select id="role" required>
+        <option value="">-- Seleccionar Perfil --</option>
+        <option value="solicitante">Aplicar a Zona Franca (Empresa)</option>
+        <option value="gerente">Perfil de Gerente (Cumplimiento)</option>
+        <option value="admin">Perfil de Administración (Analista)</option>
+      </select>
+
+      <button type="submit" class="btn-primary">Confirmar e Ingresar en PC</button>
+    </form>
+  </div>
+
+  <script src="app-movil.js"></script>
+</body>
+</html>

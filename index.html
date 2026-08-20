@@ -1,13 +1,26 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>lab3zonafranca</title>
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoFranca CR - Login QR</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Librería para generar código QR -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>ZoFranca CR</h2>
+    <p>Apunta la cámara de tu celular al código QR para iniciar sesión</p>
+    
+    <div id="qrcode" class="qr-box"></div>
+
+    <div class="status-indicator">
+      <span class="pulse"></span> Esperando escaneo desde el móvil...
+    </div>
+  </div>
+
+  <script src="app-pc.js"></script>
+</body>
 </html>
