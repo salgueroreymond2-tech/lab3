@@ -1,14 +1,14 @@
 /**
- * Plataforma PROCOMER - Módulo Frontend Escalar
+ * ZoFranca CR Management Platform - App Logic
  */
 
-// Estado global reactivo simulado
+// Estado global reactivo
 const State = {
   solicitudes: [],
   logs: []
 };
 
-// Umbrales simulados por sector para el motor de IA
+// Umbrales simulados por sector (Ley 7210)
 const UMBRALES_REGIMEN = {
   "Servicios BPO": { minInversion: 150000, minEmpleos: 15 },
   "Tecnología": { minInversion: 100000, minEmpleos: 8 },
@@ -18,16 +18,81 @@ const UMBRALES_REGIMEN = {
 document.addEventListener("DOMContentLoaded", () => {
   initStorage();
   bindEvents();
+  initTabs();
   renderApp();
 });
 
-// Inicialización de la capa de almacenamiento simulada
+// Inicialización de datos
 function initStorage() {
   const localSolicitudes = localStorage.getItem("procomer_solicitudes");
   const localLogs = localStorage.getItem("procomer_logs");
 
-  State.solicitudes = localSolicitudes ? JSON.parse(localSolicitudes) : [];
-  State.logs = localLogs ? JSON.parse(localLogs) : [];
+  if (localSolicitudes && JSON.parse(localSolicitudes).length > 0) {
+    State.solicitudes = JSON.parse(localSolicitudes);
+  } else {
+    // Solicitudes iniciales de demostración
+    State.solicitudes = [
+      {
+        id: "SOL-1045",
+        empresaNombre: "TechServices Latam S.A.",
+        sector: "Servicios BPO",
+        zonaFrancaId: "ZF-001",
+        inversion: 1650000,
+        empleos: 125,
+        estado: "PENDIENTE_REVISION",
+        timestamp: new Date().toISOString(),
+        evaluacionIA: {
+          cumpleUmbrales: true,
+          score: 0.94,
+          alertas: ["Verificar exención fiscal bajo ley 7210 art. 17."],
+          recomendacion: "APROBACIÓN_SUGERIDA"
+        }
+      },
+      {
+        id: "SOL-1044",
+        empresaNombre: "GlobalLogix CR S.A.",
+        sector: "Manufactura",
+        zonaFrancaId: "ZF-003",
+        inversion: 400000,
+        empleos: 25,
+        estado: "PENDIENTE_REVISION",
+        timestamp: new Date(Date.now() - 3600000).toISOString(),
+        evaluacionIA: {
+          cumpleUmbrales: false,
+          score: 0.42,
+          alertas: ["Inversión por debajo del umbral ($500,000)", "Empleos por debajo del mínimo sectorial (30)"],
+          recomendacion: "REVISIÓN_MANUAL_REQUERIDA"
+        }
+      },
+      {
+        id: "SOL-1043",
+        empresaNombre: "BioMed Devices Central",
+        sector: "Manufactura",
+        zonaFrancaId: "ZF-003",
+        inversion: 5200000,
+        empleos: 340,
+        estado: "APROBADO",
+        timestamp: new Date(Date.now() - 86400000).toISOString(),
+        evaluacionIA: {
+          cumpleUmbrales: true,
+          score: 0.98,
+          alertas: [],
+          recomendacion: "APROBACIÓN_SUGERIDA"
+        }
+      }
+    ];
+  }
+
+  if (localLogs && JSON.parse(localLogs).length > 0) {
+    State.logs = JSON.parse(localLogs);
+  } else {
+    State.logs = [
+      { id: "LOG-8801", timestamp: new Date().toLocaleTimeString(), accion: "PRECLASIFICACION_IA", entidadId: "SOL-1045", detalles: "Evaluación IA completada. Score: 94%" },
+      { id: "LOG-8800", timestamp: new Date(Date.now() - 3600000).toLocaleTimeString(), accion: "SOLICITUD_RECIBIDA", entidadId: "SOL-1044", detalles: "Solicitud registrada desde el portal web" }
+    ];
+  }
+
+  saveState();
 }
 
 function saveState() {
@@ -35,20 +100,38 @@ function saveState() {
   localStorage.setItem("procomer_logs", JSON.stringify(State.logs));
 }
 
-// Vinculación de eventos de la interfaz
-function bindEvents() {
-  const form = document.getElementById("solicitudForm");
-  form.addEventListener("submit", handleSolicitudSubmit);
+// Control de pestañas (Navegación entre Stitch Screens)
+function initTabs() {
+  const tabs = document.querySelectorAll(".nav-tab");
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+
+      const targetId = tab.getAttribute("data-target");
+      const views = document.querySelectorAll(".view-section");
+      views.forEach(v => {
+        if (v.id === targetId) {
+          v.classList.remove("hidden");
+        } else {
+          v.classList.add("hidden");
+        }
+      });
+    });
+  });
 }
 
-/**
- * PROCESAMIENTO ASÍNCRONO DE SOLICITUDES
- * No bloquea la interfaz de usuario durante la simulación de análisis.
- */
+function bindEvents() {
+  const form = document.getElementById("solicitudForm");
+  if (form) {
+    form.addEventListener("submit", handleSolicitudSubmit);
+  }
+}
+
+// Envío de Solicitud (Formulario)
 async function handleSolicitudSubmit(event) {
   event.preventDefault();
   const form = event.target;
-  const btnSubmit = document.getElementById("btnSubmit");
   
   if (!form.checkValidity()) {
     alert("Por favor complete todos los campos requeridos.");
@@ -57,9 +140,8 @@ async function handleSolicitudSubmit(event) {
 
   setLoadingState(true);
 
-  // Extraer valores del formulario
   const newRequestData = {
-    id: `SOL-${Date.now().toString().slice(-4)}`,
+    id: `SOL-${Math.floor(1000 + Math.random() * 9000)}`,
     empresaNombre: document.getElementById("empresaNombre").value,
     sector: document.getElementById("sector").value,
     zonaFrancaId: document.getElementById("zonaFranca").value,
@@ -70,18 +152,18 @@ async function handleSolicitudSubmit(event) {
   };
 
   try {
-    // 1. Simulación de procesamiento asíncrono en segundo plano (Web Worker / Async Task)
     const evaluacionIA = await simularPreclasificacionIA(newRequestData);
     newRequestData.evaluacionIA = evaluacionIA;
 
-    // 2. Persistencia y registro de trazabilidad
     State.solicitudes.unshift(newRequestData);
-    registrarAuditoria("SOLICITUD_CREADA_IA", newRequestData.id, `Evaluación IA completada. Confianza: ${evaluacionIA.score}`);
+    registrarAuditoria("SOLICITUD_CREADA_IA", newRequestData.id, `Evaluación IA completada. Score: ${(evaluacionIA.score * 100).toFixed(0)}%`);
 
     saveState();
     form.reset();
     renderApp();
 
+    // Cambiar automáticamente al Dashboard
+    document.querySelector('[data-target="view-dashboard"]').click();
   } catch (error) {
     console.error("Error al procesar solicitud:", error);
   } finally {
@@ -89,9 +171,6 @@ async function handleSolicitudSubmit(event) {
   }
 }
 
-/**
- * MOTOR SIMULADO DE IA / INFERENCIA EN SEGUNDO PLANO
- */
 function simularPreclasificacionIA(data) {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -100,8 +179,8 @@ function simularPreclasificacionIA(data) {
       const cumpleEmpleos = data.empleos >= umbral.minEmpleos;
       
       const alertas = [];
-      if (!cumpleInversion) alertas.push(`Inversion por debajo del umbral ($${umbral.minInversion})`);
-      if (!cumpleEmpleos) alertas.push(`Empleos por debajo del mínimo sectorial (${umbral.minEmpleos})`);
+      if (!cumpleInversion) alertas.push(`Inversión por debajo del umbral mínimo ($${umbral.minInversion.toLocaleString()})`);
+      if (!cumpleEmpleos) alertas.push(`Empleos directos por debajo del mínimo sectorial (${umbral.minEmpleos})`);
 
       resolve({
         cumpleUmbrales: cumpleInversion && cumpleEmpleos,
@@ -109,13 +188,11 @@ function simularPreclasificacionIA(data) {
         alertas: alertas,
         recomendacion: cumpleInversion && cumpleEmpleos ? "APROBACIÓN_SUGERIDA" : "REVISIÓN_MANUAL_REQUERIDA"
       });
-    }, 1200); // Retardo de 1.2s para simular procesamiento asíncrono
+    }, 1000);
   });
 }
 
-/**
- * DECISIÓN DEL ANALISTA HUMANO (Human-in-the-Loop)
- */
+// Resolución por Analista Humano
 window.resolverSolicitud = function(solicitudId, nuevoEstado) {
   const item = State.solicitudes.find(s => s.id === solicitudId);
   if (!item) return;
@@ -129,14 +206,43 @@ window.resolverSolicitud = function(solicitudId, nuevoEstado) {
   registrarAuditoria(
     `DECISION_HUMANA_${nuevoEstado}`, 
     solicitudId, 
-    `El analista cambió el estado a ${nuevoEstado}`
+    `Analista resolvió estado a ${nuevoEstado}`
   );
 
   saveState();
   renderApp();
 };
 
-// Registro inmutable de trazabilidad (Log de auditoría)
+// Modal Detalle IA
+window.abrirModalIA = function(solicitudId) {
+  const item = State.solicitudes.find(s => s.id === solicitudId);
+  if (!item) return;
+
+  document.getElementById("modalTitle").textContent = `🤖 Análisis IA — ${item.empresaNombre} (${item.id})`;
+  document.getElementById("modalScore").textContent = `${(item.evaluacionIA.score * 100).toFixed(0)}%`;
+  
+  const badgeRec = document.getElementById("modalRecomendacion");
+  badgeRec.textContent = item.evaluacionIA.recomendacion.replace(/_/g, ' ');
+  badgeRec.className = item.evaluacionIA.cumpleUmbrales ? "badge badge-approved" : "badge badge-alert";
+
+  const textAlertas = document.getElementById("modalAlertas");
+  textAlertas.value = item.evaluacionIA.alertas.length > 0 
+    ? item.evaluacionIA.alertas.join("\n") 
+    : "Sin alertas críticas. El proyecto cumple con todos los requisitos de la Ley 7210.";
+
+  const btnAprobar = document.getElementById("btnModalAprobar");
+  btnAprobar.onclick = function() {
+    resolverSolicitud(item.id, "APROBADO");
+    cerrarModalIA();
+  };
+
+  document.getElementById("modalAnalisisIA").classList.remove("hidden");
+};
+
+window.cerrarModalIA = function() {
+  document.getElementById("modalAnalisisIA").classList.add("hidden");
+};
+
 function registrarAuditoria(accion, entidadId, detalles) {
   const logEntry = {
     id: `LOG-${Math.floor(Math.random() * 9000 + 1000)}`,
@@ -148,7 +254,7 @@ function registrarAuditoria(accion, entidadId, detalles) {
   State.logs.unshift(logEntry);
 }
 
-// Renderizado dinamico UI
+// Renderizado Dinámico
 function renderApp() {
   renderTable();
   renderAuditLogs();
@@ -157,11 +263,14 @@ function renderApp() {
 function renderTable() {
   const tbody = document.getElementById("solicitudesTableBody");
   const pendingCount = document.getElementById("pendingCount");
+  const kpiTotal = document.getElementById("kpiTotal");
   
+  if (!tbody) return;
   tbody.innerHTML = "";
   
   const pendientes = State.solicitudes.filter(s => s.estado === "PENDIENTE_REVISION").length;
-  pendingCount.textContent = `${pendientes} PENDIENTES`;
+  if (pendingCount) pendingCount.textContent = `${pendientes} PENDIENTES`;
+  if (kpiTotal) kpiTotal.textContent = State.solicitudes.length;
 
   if (State.solicitudes.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: var(--text-muted);">No hay solicitudes registradas</td></tr>`;
@@ -171,17 +280,18 @@ function renderTable() {
   State.solicitudes.forEach(sol => {
     const tr = document.createElement("tr");
     
-    // Configuración del badge de IA
     const iaBadgeClass = sol.evaluacionIA.cumpleUmbrales ? "badge-approved" : "badge-alert";
     const iaTexto = sol.evaluacionIA.cumpleUmbrales ? "CUMPLE UMBRALES" : `ALERTA (${sol.evaluacionIA.alertas.length})`;
 
-    // Generar botones de acción para el analista humano
     let accionesHtml = `<span class="badge badge-system">${sol.estado}</span>`;
     if (sol.estado === "PENDIENTE_REVISION") {
       accionesHtml = `
+        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle IA</button>
         <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')">Aprobar</button>
         <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')">Rechazar</button>
       `;
+    } else {
+      accionesHtml += ` <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>`;
     }
 
     tr.innerHTML = `
@@ -190,7 +300,7 @@ function renderTable() {
       <td>${sol.sector}</td>
       <td>$${sol.inversion.toLocaleString()} / ${sol.empleos} emp</td>
       <td>
-        <span class="badge ${iaBadgeClass}" title="${sol.evaluacionIA.alertas.join('; ')}">
+        <span class="badge ${iaBadgeClass}">
           ${iaTexto}
         </span>
       </td>
@@ -202,17 +312,19 @@ function renderTable() {
 
 function renderAuditLogs() {
   const logList = document.getElementById("auditLogList");
+  if (!logList) return;
   logList.innerHTML = "";
   
   State.logs.slice(0, 10).forEach(log => {
     const li = document.createElement("li");
-    li.textContent = `[${log.timestamp}] [${log.accion}] Ref: ${log.entidadId} - ${log.detalles}`;
+    li.textContent = `[${log.timestamp}] [${log.accion}] Ref: ${log.entidadId} — ${log.detalles}`;
     logList.appendChild(li);
   });
 }
 
 function setLoadingState(loading) {
   const btnSubmit = document.getElementById("btnSubmit");
+  if (!btnSubmit) return;
   const spinner = btnSubmit.querySelector(".spinner");
   const btnText = btnSubmit.querySelector(".btn-text");
 

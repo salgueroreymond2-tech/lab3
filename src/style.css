@@ -1,17 +1,18 @@
 :root {
-  --bg-color: #f4f6f9;
-  --card-bg: #ffffff;
-  --primary-color: #003366; /* Azul Institucional */
-  --primary-hover: #002244;
-  --accent-color: #00a896;
-  --text-main: #2b2d42;
-  --text-muted: #6c757d;
-  --border-color: #e2e8f0;
+  --bg-color: #0b132b;
+  --card-bg: #1c2541;
+  --surface-color: #1f2a48;
+  --primary-color: #00b4d8; /* Vibrant Cyan */
+  --primary-hover: #0096c7;
+  --accent-color: #7209b7;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --border-color: #2e3b5e;
   
   --status-pending: #f59e0b;
   --status-approved: #10b981;
   --status-rejected: #ef4444;
-  --status-alert: #8b5cf6;
+  --status-alert: #3b82f6;
 }
 
 * {
@@ -96,6 +97,8 @@ input, select {
   border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 0.95rem;
+  background-color: var(--bg-color);
+  color: var(--text-main);
 }
 
 input:focus, select:focus {
@@ -116,8 +119,8 @@ input:focus, select:focus {
   gap: 8px;
 }
 
-.btn-primary { background-color: var(--primary-color); color: #fff; }
-.btn-primary:hover { background-color: var(--primary-hover); }
+.btn-primary { background-color: var(--primary-color); color: #0b132b; }
+.btn-primary:hover { background-color: var(--primary-hover); color: #fff; }
 .btn-success { background-color: var(--status-approved); color: #fff; }
 .btn-danger { background-color: var(--status-rejected); color: #fff; }
 .btn-sm { padding: 6px 10px; font-size: 0.8rem; }
@@ -139,7 +142,8 @@ input:focus, select:focus {
 }
 
 .data-table th {
-  background-color: var(--bg-color);
+  background-color: var(--surface-color);
+  color: var(--text-main);
   font-weight: 600;
 }
 
@@ -151,11 +155,11 @@ input:focus, select:focus {
   display: inline-block;
 }
 
-.badge-system { background-color: #e2e8f0; color: #334155; }
-.badge-pending { background-color: #fef3c7; color: #92400e; }
-.badge-alert { background-color: #f3e8ff; color: #6b21a8; }
-.badge-approved { background-color: #d1fae5; color: #065f46; }
-.badge-rejected { background-color: #fee2e2; color: #991b1b; }
+.badge-system { background-color: #2e3b5e; color: #94a3b8; }
+.badge-pending { background-color: #451a03; color: #fde68a; }
+.badge-alert { background-color: #3b0764; color: #e9d5ff; }
+.badge-approved { background-color: #064e3b; color: #a7f3d0; }
+.badge-rejected { background-color: #7f1d1d; color: #fecaca; }
 
 .counter {
   background: var(--primary-color);
