@@ -170,22 +170,22 @@ function initRoleNavigation() {
     if (tabCumplimiento) tabCumplimiento.click();
 
   } else if (role === "admin") {
-    // Analista PROCOMER (admin): Muestra todas las pestañas
+    // Analista PROCOMER (admin): Solo debe ver 'Dashboard de Solicitudes'
     if (tabSolicitud) {
-      tabSolicitud.classList.remove("hidden");
-      tabSolicitud.style.display = "inline-flex";
+      tabSolicitud.classList.add("hidden");
+      tabSolicitud.style.display = "none";
     }
     if (tabDashboard) {
       tabDashboard.classList.remove("hidden");
       tabDashboard.style.display = "inline-flex";
     }
     if (tabCumplimiento) {
-      tabCumplimiento.classList.remove("hidden");
-      tabCumplimiento.style.display = "inline-flex";
+      tabCumplimiento.classList.add("hidden");
+      tabCumplimiento.style.display = "none";
     }
     if (tabAlertas) {
-      tabAlertas.classList.remove("hidden");
-      tabAlertas.style.display = "inline-flex";
+      tabAlertas.classList.add("hidden");
+      tabAlertas.style.display = "none";
     }
 
     if (tabDashboard) tabDashboard.click();
