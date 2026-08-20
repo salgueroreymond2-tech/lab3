@@ -1,0 +1,53 @@
+{
+  "zonas_francas": [
+    {
+      "id": "ZF-001",
+      "nombre": "America Free Zone (AFZ)",
+      "ubicacion": "Heredia, Costa Rica",
+      "categoria_reguladora": "GADA"
+    }
+  ],
+  "solicitudes": [
+    {
+      "id": "SOL-2026-001",
+      "empresa_nombre": "TechServices Latam S.A.",
+      "sector": "Servicios BPO",
+      "zona_franca_id": "ZF-001",
+      "inversion_proyectada_usd": 1500000,
+      "empleos_proyectados": 120,
+      "respaldo_legal_url": "docs/legal_001.pdf",
+      "estado": "PENDIENTE_REVISION",
+      "fecha_creacion": "2026-08-20T10:30:00Z",
+      "evaluacion_ia": {
+        "cumple_umbrales": true,
+        "score_confianza": 0.94,
+        "alertas": [
+          "Verificar exención fiscal bajo ley 7210 art. 17."
+        ]
+      }
+    }
+  ],
+  "reportes_cumplimiento": [
+    {
+      "id": "REP-2026-Q2-001",
+      "solicitud_id": "SOL-2026-001",
+      "periodo": "2026-Q2",
+      "inversion_real_usd": 400000,
+      "empleos_reales": 115,
+      "exportaciones_usd": 850000,
+      "estado_cumplimiento": "ALERTA_DESVIACION",
+      "observacion_ia": "Empleos reportados 4.1% por debajo de la proyección anual."
+    }
+  ],
+  "auditoria_logs": [
+    {
+      "id": "LOG-8801",
+      "entidad": "solicitudes",
+      "entidad_id": "SOL-2026-001",
+      "accion": "EVALUACION_AUTOMATICA_IA",
+      "ejecutado_por": "SYSTEM_IA_WORKER",
+      "timestamp": "2026-08-20T10:30:05Z",
+      "detalles": "Pre-clasificación completada con éxito."
+    }
+  ]
+}
