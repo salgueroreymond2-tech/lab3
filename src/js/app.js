@@ -100,6 +100,99 @@ function saveState() {
   localStorage.setItem("procomer_logs", JSON.stringify(State.logs));
 }
 
+// Control de Visibilidad de Pestañas por Rol (localStorage.getItem('zofranca_user'))
+function initRoleNavigation() {
+  const userStr = localStorage.getItem("zofranca_user");
+  let role = "solicitante";
+
+  if (userStr) {
+    try {
+      const user = JSON.parse(userStr);
+      role = user.role || "solicitante";
+    } catch (e) {
+      console.error("Error al leer zofranca_user:", e);
+    }
+  }
+
+  const tabSolicitud = document.getElementById("tab-solicitud");
+  const tabDashboard = document.getElementById("tab-dashboard");
+  const tabCumplimiento = document.getElementById("tab-cumplimiento");
+  const tabAlertas = document.getElementById("tab-alertas");
+
+  if (role === "solicitante") {
+    // Empresa Solicitante: Solo debe ver 'Formulario de Solicitud'
+    if (tabSolicitud) {
+      tabSolicitud.classList.remove("hidden");
+      tabSolicitud.style.display = "inline-flex";
+    }
+    if (tabDashboard) {
+      tabDashboard.classList.add("hidden");
+      tabDashboard.style.display = "none";
+    }
+    if (tabCumplimiento) {
+      tabCumplimiento.classList.add("hidden");
+      tabCumplimiento.style.display = "none";
+    }
+    if (tabAlertas) {
+      tabAlertas.classList.add("hidden");
+      tabAlertas.style.display = "none";
+    }
+
+    if (tabSolicitud) tabSolicitud.click();
+
+  } else if (role === "gerente") {
+    // Gerencia de Cumplimiento: Solo debe ver 'Reporte de Cumplimiento' y 'Panel de Alertas'
+    if (tabSolicitud) {
+      tabSolicitud.classList.add("hidden");
+      tabSolicitud.style.display = "none";
+    }
+    if (tabDashboard) {
+      tabDashboard.classList.add("hidden");
+      tabDashboard.style.display = "none";
+    }
+    if (tabCumplimiento) {
+      tabCumplimiento.classList.remove("hidden");
+      tabCumplimiento.style.display = "inline-flex";
+    }
+    if (tabAlertas) {
+      tabAlertas.classList.remove("hidden");
+      tabAlertas.style.display = "inline-flex";
+    }
+
+    if (tabCumplimiento) tabCumplimiento.click();
+
+  } else {
+    // Analista PROCOMER (admin): Mantiene visibilidad de todas las pestañas
+    if (tabSolicitud) {
+      tabSolicitud.classList.remove("hidden");
+      tabSolicitud.style.display = "inline-flex";
+    }
+    if (tabDashboard) {
+      tabDashboard.classList.remove("hidden");
+      tabDashboard.style.display = "inline-flex";
+    }
+    if (tabCumplimiento) {
+      tabCumplimiento.classList.remove("hidden");
+      tabCumplimiento.style.display = "inline-flex";
+    }
+    if (tabAlertas) {
+      tabAlertas.classList.remove("hidden");
+      tabAlertas.style.display = "inline-flex";
+    }
+  }
+}
+
+// Configuración del Botón '🔴 Cerrar Sesión'
+function setupLogout() {
+  const btnLogout = document.getElementById("btnLogout");
+  if (btnLogout) {
+    btnLogout.addEventListener("click", () => {
+      localStorage.removeItem("zofranca_user");
+      window.location.href = "/index.html"; // Redirige al login principal
+    });
+  }
+}
+
 // Control de pestañas (Navegación entre Stitch Screens)
 function initTabs() {
   const tabs = document.querySelectorAll(".nav-tab");
@@ -162,8 +255,13 @@ async function handleSolicitudSubmit(event) {
     form.reset();
     renderApp();
 
-    // Cambiar automáticamente al Dashboard
-    document.querySelector('[data-target="view-dashboard"]').click();
+    // Cambiar al Dashboard si está visible para el rol
+    const tabDash = document.getElementById("tab-dashboard");
+    if (tabDash && !tabDash.classList.contains("hidden")) {
+      tabDash.click();
+    } else {
+      alert("¡Solicitud enviada con éxito! Su proyecto ha sido ingresado para evaluación.");
+    }
   } catch (error) {
     console.error("Error al procesar solicitud:", error);
   } finally {

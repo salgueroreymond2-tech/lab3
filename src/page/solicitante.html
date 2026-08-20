@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoFranca CR — Portal de Empresa Solicitante</title>
+  <link rel="stylesheet" href="../styles/das.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <div class="logo-container">
+      <h1>ZoFranca CR — Portal de Empresa Solicitante</h1>
+      <p>Formulario Oficial de Solicitud de Régimen de Zona Franca (Costa Rica)</p>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="badge badge-approved">🏢 Empresa Solicitante</span>
+      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;">🔴 Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <main style="max-width: 900px; margin: 0 auto;">
+    
+    <!-- FORMULARIO EXCLUSIVO PARA EMPRESA SOLICITANTE -->
+    <section class="card">
+      <h2>Formulario de Solicitud de Régimen de Zona Franca</h2>
+      <p class="subtitle">Complete la información requerida. La pre-clasificación e inspección con IA se realiza en segundo plano.</p>
+
+      <form id="solicitudForm" class="form-stack" novalidate>
+        <div class="form-group">
+          <label for="empresaNombre">Nombre de la Empresa / Razón Social</label>
+          <input type="text" id="empresaNombre" name="empresaNombre" required placeholder="Ej. TechCorp CR S.A.">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="sector">Sector Operativo</label>
+            <select id="sector" name="sector" required>
+              <option value="">-- Seleccione sector --</option>
+              <option value="Servicios BPO">Servicios BPO / Back-office</option>
+              <option value="Tecnología">Tecnología y Software</option>
+              <option value="Manufactura">Manufactura Avanzada / Dispositivos Médicos</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="zonaFranca">Zona Franca Destino</label>
+            <select id="zonaFranca" name="zonaFranca" required>
+              <option value="ZF-001">America Free Zone (AFZ)</option>
+              <option value="ZF-002">UltraPARK II</option>
+              <option value="ZF-003">Coyol Free Zone</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="inversion">Inversión Proyectada ($ USD)</label>
+            <input type="number" id="inversion" name="inversion" min="1000" required placeholder="1500000">
+          </div>
+
+          <div class="form-group">
+            <label for="empleos">Empleos Directos Proyectados</label>
+            <input type="number" id="empleos" name="empleos" min="1" required placeholder="50">
+          </div>
+        </div>
+
+        <button type="submit" id="btnSubmit" class="btn btn-primary" style="margin-top:10px;">
+          <span class="btn-text">Enviar a Revisión Asíncrona</span>
+          <span class="spinner hidden" aria-hidden="true"></span>
+        </button>
+      </form>
+    </section>
+
+  </main>
+
+  <script type="module" src="../js/app.js"></script>
+</body>
+</html>

@@ -42,8 +42,16 @@ document.addEventListener("DOMContentLoaded", () => {
         fecha: new Date().toISOString()
       }));
 
-      // Redirigir al Dashboard Principal
-      window.location.href = "src/page/index.html";
+      // Redirigir según el perfil seleccionado
+      if (perfil === "admin") {
+        window.location.href = "src/page/analista.html";
+      } else if (perfil === "solicitante") {
+        window.location.href = "src/page/solicitante.html";
+      } else if (perfil === "gerente") {
+        window.location.href = "src/page/gerencia.html";
+      } else {
+        window.location.href = "src/page/index.html";
+      }
     });
   }
 

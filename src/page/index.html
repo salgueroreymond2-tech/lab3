@@ -13,21 +13,24 @@
       <h1> ZoFranca CR</h1>
       <p>Management Platform — Costa Rica Free Trade Zone Operations</p>
     </div>
-    <span class="badge badge-system">IA & Real-Time Auditable</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span class="badge badge-system">IA & Real-Time Auditable</span>
+      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;">🔴 Cerrar Sesión</button>
+    </div>
   </header>
 
   <!-- PESTAÑAS DE NAVEGACIÓN (STITCH SCREENS) -->
   <nav class="nav-tabs">
-    <button class="nav-tab active" data-target="view-solicitud">
+    <button id="tab-solicitud" class="nav-tab active" data-target="view-solicitud">
       📝 Formulario de Solicitud
     </button>
-    <button class="nav-tab" data-target="view-dashboard">
+    <button id="tab-dashboard" class="nav-tab" data-target="view-dashboard">
       📊 Dashboard de Solicitudes
     </button>
-    <button class="nav-tab" data-target="view-cumplimiento">
+    <button id="tab-cumplimiento" class="nav-tab" data-target="view-cumplimiento">
       📈 Reporte de Cumplimiento
     </button>
-    <button class="nav-tab" data-target="view-alertas">
+    <button id="tab-alertas" class="nav-tab" data-target="view-alertas">
       ⚠️ Panel de Alertas
     </button>
   </nav>
