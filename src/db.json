@@ -7,6 +7,7 @@
       "categoria_reguladora": "GADA"
     }
   ],
+  "empresas": [],
   "solicitudes": [
     {
       "id": "SOL-2026-001",
@@ -39,6 +40,7 @@
       "observacion_ia": "Empleos reportados 4.1% por debajo de la proyección anual."
     }
   ],
+  "sesiones": [],
   "auditoria_logs": [
     {
       "id": "LOG-8801",
