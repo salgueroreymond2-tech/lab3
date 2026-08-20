@@ -335,15 +335,39 @@ window.abrirModalIA = function(solicitudId) {
   badgeRec.className = item.evaluacionIA.cumpleUmbrales ? "badge badge-approved" : "badge badge-alert";
 
   const textAlertas = document.getElementById("modalAlertas");
-  textAlertas.value = item.evaluacionIA.alertas.length > 0 
-    ? item.evaluacionIA.alertas.join("\n") 
-    : "Sin alertas críticas. El proyecto cumple con todos los requisitos de la Ley 7210.";
+  if (textAlertas) {
+    textAlertas.removeAttribute("readonly");
+    textAlertas.value = item.evaluacionIA.observaciones 
+      || (item.evaluacionIA.alertas && item.evaluacionIA.alertas.length > 0 
+          ? item.evaluacionIA.alertas.join("\n") 
+          : "Sin alertas críticas. El proyecto cumple con todos los requisitos de la Ley 7210.");
+  }
+
+  const guardarObservaciones = () => {
+    const textoActual = textAlertas ? textAlertas.value.trim() : "";
+    item.evaluacionIA.observaciones = textoActual;
+    item.evaluacionIA.alertas = textoActual ? textoActual.split("\n").filter(l => l.trim() !== "") : [];
+    saveState();
+    registrarAuditoria("OBSERVACIONES_ACTUALIZADAS", item.id, `Notas guardadas por el analista.`);
+    renderApp();
+  };
+
+  const btnGuardar = document.getElementById("btnModalGuardar");
+  if (btnGuardar) {
+    btnGuardar.onclick = function() {
+      guardarObservaciones();
+      alert("¡Observaciones del analista guardadas con éxito!");
+    };
+  }
 
   const btnAprobar = document.getElementById("btnModalAprobar");
-  btnAprobar.onclick = function() {
-    resolverSolicitud(item.id, "APROBADO");
-    cerrarModalIA();
-  };
+  if (btnAprobar) {
+    btnAprobar.onclick = function() {
+      guardarObservaciones();
+      resolverSolicitud(item.id, "APROBADO");
+      cerrarModalIA();
+    };
+  }
 
   document.getElementById("modalAnalisisIA").classList.remove("hidden");
 };
