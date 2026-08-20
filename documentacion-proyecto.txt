@@ -1,0 +1,255 @@
+===============================================================================
+       DOCUMENTACIÓN OFICIAL DE REQUERIMIENTOS Y ESPECIFICACIÓN TÉCNICA
+                     PROYECTO: SISTEMA ZOFRANCA CR
+===============================================================================
+
+1. PORTADA
+-------------------------------------------------------------------------------
+Nombre del Proyecto: Plataforma Digital de Gestión y Auditoría ZoFranca CR
+Nombre del Equipo:   Equipo de Desarrollo de Software - Lab 3
+Integrantes:         - Integrante 1 (Desarrollador Lead)
+                     - Integrante 2 (Analista de Requerimientos)
+                     - Integrante 3 (Diseñador UX/UI & QA)
+Fecha:               20 de agosto de 2026
+Institución:         PROCOMER / Laboratorio de Desarrollo de Software
+
+
+2. INTRODUCCIÓN AL PROBLEMA
+-------------------------------------------------------------------------------
+La gestión de solicitudes de ingreso y la fiscalización del Régimen de Zona 
+Franca en Costa Rica han operado tradicionalmente mediante flujos manuales y 
+descentralizados. Esto genera cuellos de botella en la verificación de requisitos 
+legales (Ley N° 7210), retrasos significativos en la aprobación de nuevos 
+proyectos de inversión, falta de trazabilidad en las decisiones de los analistas 
+y dificultades para monitorear en tiempo real si las empresas beneficiarias 
+cumplen activamente con sus metas de inversión y empleo.
+
+El problema radica en la ausencia de una plataforma integrada centralizada que 
+permita pre-validar de forma inteligente los requisitos de las empresas, filtrar 
+la visibilidad del sistema según la responsabilidad de cada actor operante 
+(Solicitante, Analista PROCOMER, Gerencia de Cumplimiento) y garantizar auditoría 
+inmutable en cada etapa del proceso.
+
+
+3. OBJETIVOS DEL SISTEMA
+-------------------------------------------------------------------------------
+3.1 Objetivo General:
+Desarrollar e implementar una plataforma web centralizada ("ZoFranca CR") que 
+automatice la recepción de solicitudes, la evaluación asistida por IA de requisitos 
+legales de la Ley 7210, la gestión de expedientes y el monitoreo gerencial de 
+cumplimiento y alertas operativas, optimizando los tiempos de respuesta y 
+asegurando un control de acceso estricto por roles.
+
+3.2 Objetivos Específicos:
+1. Implementar un módulo de autenticación seguro con control de acceso basado en 
+   roles (RBAC) para Solicitantes, Analistas PROCOMER y Gerentes de Cumplimiento.
+2. Integrar un motor simulado de inteligencia artificial que realice pre-clasificación 
+    e inspección de umbrales sectoriales (inversión y empleo) en segundo plano.
+3. Proveer interfaces personalizadas y aisladas que muestren únicamente las herramientas 
+   y métricas relevantes para el perfil del usuario autenticado.
+4. Establecer un registro de auditoría inmutable que garantice la trazabilidad 
+   y transparencia total de las decisiones administrativas tomadas en la plataforma.
+
+
+4. GLOSARIO DEL DOMINIO
+-------------------------------------------------------------------------------
+- Régimen de Zona Franca (RZF): Conjunto de incentivos y exenciones fiscales y 
+  aduaneras otorgadas por el Estado costarricense para atraer inversión extranjera 
+  y nacional.
+- Ley N° 7210: Ley reguladora del Régimen de Zonas Francas en Costa Rica.
+- PROCOMER: Promotora del Comercio Exterior de Costa Rica, entidad encargada de 
+  la administración y evaluación del régimen.
+- Compromiso de Inversión: Monto proyectado en dólares (USD) que la empresa 
+  se compromete a ejecutar en infraestructura y equipo.
+- Compromiso de Empleo: Cantidad proyectada de empleos directos que la empresa 
+  se compromete a generar y mantener.
+- Umbral Sectorial: Requisitos mínimos obligatorios por ley según la industria 
+  (BPO, Tecnología, Manufactura).
+- Pre-clasificación por IA: Evaluación sintética realizada por el sistema para 
+  determinar la factibilidad de aprobación de una solicitud.
+- Audit Log (Registro de Auditoría): Bitácora inmutable de eventos y decisiones.
+
+
+5. LISTADO DE REQUERIMIENTOS FUNCIONALES (RF)
+-------------------------------------------------------------------------------
+[RF-01] Autenticación por Credenciales Oficiales
+        Descripción: El sistema debe validar el usuario, contraseña y rol contra 
+        la lista de credenciales autorizadas antes de permitir el ingreso.
+        Prioridad: ALTA
+
+[RF-02] Control de Visibilidad por Rol en el Dashboard
+        Descripción: El sistema debe renderizar únicamente los componentes y 
+        pestañas permitidas según el rol del usuario (solicitante: Formulario; 
+        gerente: Cumplimiento y Alertas; admin: Dashboard de Solicitudes).
+        Prioridad: ALTA
+
+[RF-03] Formulario de Solicitud de Régimen ZF
+        Descripción: Permitir a la Empresa Solicitante registrar datos de su 
+        empresa, sector, zona franca de destino, inversión proyectada y empleos.
+        Prioridad: ALTA
+
+[RF-04] Pre-clasificación e Evaluación Asíncrona con IA
+        Descripción: El sistema debe ejecutar una validación automática contra 
+        los umbrales de la Ley 7210 al enviar una solicitud y emitir un score 
+        y recomendación.
+        Prioridad: ALTA
+
+[RF-05] Bandeja de Inspección del Analista (Aprobación/Rechazo)
+        Descripción: Permitir al Analista PROCOMER revisar solicitudes pendientes, 
+        consultar el desglose del análisis de IA y cambiar el estado de la solicitud.
+        Prioridad: ALTA
+
+[RF-06] Reporte de Cumplimiento Trimestral
+        Descripción: Permitir a la Gerencia de Cumplimiento visualizar las métricas 
+        acumuladas de inversión, empleos reales y exportaciones por empresa.
+        Prioridad: MEDIA
+
+[RF-07] Panel de Alertas de Desviación y Riesgo
+        Descripción: Desplegar alertas automáticas clasificadas por severidad 
+        cuando existan inconsistencias fiscales u operativas en las empresas.
+        Prioridad: MEDIA
+
+[RF-08] Registro de Auditoría Inmutable
+        Descripción: Registrar de forma automática cada creación de solicitud, 
+        evaluación de IA y resolución humana en una bitácora con timestamp.
+        Prioridad: ALTA
+
+[RF-09] Cierre de Sesión Seguro
+        Descripción: Eliminar el token o datos de sesión del almacenamiento 
+        local al presionar '🔴 Cerrar Sesión' y redirigir al portal de login.
+        Prioridad: ALTA
+
+
+6. LISTADO DE REQUERIMIENTOS NO FUNCIONALES (RNF)
+-------------------------------------------------------------------------------
+[RNF-01] Usabilidad y Estética Premium: La interfaz debe implementarse con un 
+         diseño moderno (dark mode, glassmorphism, paletas tailoreadas), responsive 
+         y claro para reducir la carga cognitiva del usuario.
+[RNF-02] Desempeño: Las validaciones de cliente y renderizado dinámico de 
+         vistas deben ejecutarse en menos de 300 ms.
+[RNF-03] Seguridad de Acceso: No se debe permitir la visualización de vistas 
+         privadas del dashboard sin la existencia de un objeto 'zofranca_user' válido.
+[RNF-04] Compatibilidad: Soporte garantizado en navegadores web modernos 
+         (Chrome, Edge, Firefox, Safari).
+[RNF-05] Mantenibilidad: Código modularizado separando estructura (HTML), 
+         estilos (CSS) y lógica de aplicación (JS).
+
+
+7. HISTORIAS DE USUARIO (AGRUPADAS POR ROL)
+-------------------------------------------------------------------------------
+7.1 Rol: Empresa Solicitante
+- HU-01: Como Empresa Solicitante, quiero ingresar al portal con mis credenciales 
+  para acceder al formulario oficial de registro.
+- HU-02: Como Empresa Solicitante, quiero enviar mi propuesta de inversión y empleo 
+  para recibir una pre-evaluación automática del régimen.
+
+7.2 Rol: Analista PROCOMER (Admin)
+- HU-03: Como Analista PROCOMER, quiero visualizar una bandeja exclusiva de 
+  solicitudes de inversión para inspeccionar y decidir sobre cada expediente.
+- HU-04: Como Analista PROCOMER, quiero consultar las recomendaciones y checklist 
+  generados por la IA para agilizar mi toma de decisiones.
+
+7.3 Rol: Gerencia de Cumplimiento (Gerente)
+- HU-05: Como Gerente de Cumplimiento, quiero acceder a los reportes trimestrales 
+  para verificar la inversión real ejecutada y los empleos generados.
+- HU-06: Como Gerente de Cumplimiento, quiero revisar el panel de alertas de riesgo 
+  para identificar empresas con desviaciones fiscales o contratación insuficiente.
+
+
+8. CRITERIOS DE ACEPTACIÓN (FORMATO DADO / CUANDO / ENTONCES)
+-------------------------------------------------------------------------------
+[RF-01] Autenticación por Credenciales Oficiales
+- Dado que el usuario está en la página de inicio de sesión (/index.html),
+  Cuando ingresa "analista@procomer.com", contraseña "1234" y selecciona el rol "Analista PROCOMER",
+  Entonces el sistema guarda la sesión en localStorage ('zofranca_user') y redirige a /src/page/index.html.
+- Dado que el usuario está en la página de inicio de sesión,
+  Cuando ingresa una contraseña incorrecta,
+  Entonces el sistema muestra una alerta de error y no redirige la página.
+
+[RF-02] Control de Visibilidad por Rol
+- Dado que un usuario ha iniciado sesión con el rol "solicitante",
+  Cuando ingresa al dashboard principal,
+  Entonces únicamente la pestaña 'Formulario de Solicitud' está visible y activa, mientras que Dashboard, Cumplimiento y Alertas permanecen ocultas.
+- Dado que un usuario ha iniciado sesión con el rol "admin",
+  Cuando ingresa al dashboard principal,
+  Entonces únicamente la pestaña 'Dashboard de Solicitudes' está visible y activa.
+
+[RF-03] Formulario de Solicitud
+- Dado que la Empresa Solicitante completa todos los campos obligatorios del formulario,
+  Cuando hace clic en "Enviar a Revisión Asíncrona",
+  Entonces el sistema procesa la solicitud y genera un nuevo registro registrado en la bitácora.
+
+[RF-04] Pre-clasificación e Evaluación Asíncrona con IA
+- Dado que se envía una solicitud con inversión de $1,650,000 en el sector Servicios BPO,
+  Cuando la IA procesa la solicitud,
+  Entonces asigna un score superior a 0.90 y marca la recomendación como "APROBACIÓN SUGERIDA".
+
+[RF-05] Bandeja de Inspección del Analista
+- Dado que el Analista visualiza una solicitud pendiente en la tabla,
+  Cuando presiona el botón "Aprobar",
+  Entonces el estado de la solicitud cambia a "APROBADO" y se registra el evento en el Audit Log.
+
+[RF-08] Registro de Auditoría Inmutable
+- Dado que se realiza una acción crítica en el sistema (creación o resolución),
+  Cuando la acción se completa con éxito,
+  Entonces se agrega un nuevo ítem a la lista de auditoría visual con el timestamp y código de transacción.
+
+[RF-09] Cierre de Sesión Seguro
+- Dado que el usuario está autenticado en cualquier panel del dashboard,
+  Cuando hace clic en el botón '🔴 Cerrar Sesión',
+  Entonces el sistema elimina la clave 'zofranca_user' de localStorage y redirige a /index.html.
+
+
+9. DESCRIPCIÓN DEL PROCESO MANUAL VS. PROCESO AUTOMATIZADO
+-------------------------------------------------------------------------------
+9.1 Proceso Manual Actual:
+1. La empresa descarga un formulario en formato PDF/Word desde el sitio web de PROCOMER.
+2. Completa los datos en físico o digital y los envía mediante correo electrónico.
+3. Un funcionario de PROCOMER recibe el correo, abre la documentación y verifica 
+   manualmente contra la Ley 7210 los montos de inversión y empleos.
+4. La revisión de cumplimiento tributario requiere consultar bases de datos separadas.
+5. El dictamen final se redacta en un oficio firmado a mano y enviado a la junta directiva.
+   *Desventajas:* Proceso lento (semanas), falta de transparencia y riesgo de errores humanos.
+
+9.2 Proceso Automatizado Propuesto (ZoFranca CR):
+1. La empresa ingresa al portal web seguro y completa un formulario dinámico validado.
+2. El sistema envía los datos al motor de IA que pre-clasifica la solicitud en segundos 
+   evaluando los umbrales de la Ley 7210.
+3. El Analista PROCOMER recibe la solicitud clasificada con recomendaciones automáticas 
+   y la resuelve con un clic.
+4. La Gerencia de Cumplimiento monitorea mediante dashboards interactivos y alertas 
+   en tiempo real el desempeño de todas las empresas activas.
+5. Cada evento queda registrado inmediatamente en un Audit Log inmutable.
+   *Ventajas:* Reducción de tiempos a minutos, cero papeles, 100% auditable y visualmente intuitivo.
+
+
+10. EVIDENCIA DE LA VALIDACIÓN CON IA
+-------------------------------------------------------------------------------
+10.1 Prompt Inicial Enviado a la IA:
+"Actúa como un arquitecto de software y analista de negocios experto en el Régimen 
+de Zonas Francas de Costa Rica (Ley 7210). Requiero diseñar una solución web interactiva 
+para PROCOMER que permita a empresas enviar solicitudes, a analistas evaluarlas con 
+ayuda de IA y a la gerencia monitorear alertas de cumplimiento y reportes. Proporciona 
+los requerimientos funcionales clave y la estructura de control de acceso por roles."
+
+10.2 Respuesta Obtenida de la IA (Iteración 1):
+"Para abordar el sistema ZoFranca CR, propongo una arquitectura desacoplada basada 
+en roles estrictos:
+1. Rol Solicitante: Acceso al Formulario de Registro con validaciones de campos de 
+   inversión ($ USD) y empleo directo.
+2. Rol Analista: Bandeja de entrada con indicadores KPI, tabla de solicitudes y modal 
+   de asistencia IA con Score de confianza (%) y checklist de la Ley 7210.
+3. Rol Gerencia: Monitoreo de exportaciones, empleo real y panel de alertas fiscales.
+Recomendación: Implementar almacenamiento reactivo local (localStorage) para demo 
+y trazabilidad mediante registro de auditoría."
+
+10.3 Iteración 2 (Ajuste de Visibilidad por Rol):
+- Prompt de Ajuste: "Necesitamos afinar el control de acceso en el frontend. La empresa 
+  solicitante solo debe ver la pestaña de formulario; la gerencia solo debe ver 
+  cumplimiento y alertas; el analista solo debe ver el dashboard de solicitudes. 
+  ¿Cómo estructurar el código en JavaScript?"
+- Respuesta Obtenida: "Define una función `initRoleNavigation()` que lea `zofranca_user` 
+  de `localStorage` al evento `DOMContentLoaded`. Oculta dinámicamente con `display: none` 
+  los botones de navegación que no correspondan al rol del usuario y haz click simulado 
+  en la pestaña autorizada."
+===============================================================================

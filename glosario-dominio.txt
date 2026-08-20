@@ -1,0 +1,78 @@
+===============================================================================
+                       GLOSARIO DEL DOMINIO
+               SISTEMA DE GESTIÓN ZOFRANCA CR (PROCOMER)
+===============================================================================
+
+1. Régimen de Zona Franca (RZF)
+-------------------------------------------------------------------------------
+Definición: Conjunto de incentivos y beneficios fiscales y aduaneros otorgados 
+por el Estado costarricense a empresas que realizan inversiones en el país, 
+regulado principalmente por la Ley N° 7210.
+
+2. Ley N° 7210 (Ley de Régimen de Zonas Francas)
+-------------------------------------------------------------------------------
+Definición: Marco legal de Costa Rica que establece los requisitos de inversión 
+mínima, generación de empleo, exenciones tributarias (como exención de IVA y 
+impuesto sobre la renta) y obligaciones operativas para las empresas beneficiarias.
+
+3. PROCOMER (Promotora del Comercio Exterior de Costa Rica)
+-------------------------------------------------------------------------------
+Definición: Entidad oficial encargada de la administración, evaluación, 
+fiscalización y trámite de las solicitudes de ingreso y permanencia de las 
+empresas en el Régimen de Zona Franca.
+
+4. Empresa Solicitante (Perfil Solicitante)
+-------------------------------------------------------------------------------
+Definición: Persona jurídica privada que completa y presenta la solicitud formal 
+para ingresar al Régimen de Zona Franca, detallando su sector, inversión proyectada 
+y empleos proyectados.
+
+5. Analista PROCOMER (Perfil Admin)
+-------------------------------------------------------------------------------
+Definición: Funcionario técnico de PROCOMER responsable de revisar, auditar, 
+evaluar y resolver (aprobar o rechazar) las solicitudes presentadas en la bandeja 
+del sistema.
+
+6. Gerencia de Cumplimiento (Perfil Gerente)
+-------------------------------------------------------------------------------
+Definición: Unidad gerencial encargada de la supervisión normativa continua, 
+el seguimiento del cumplimiento trimestral/anual de metas de inversión y empleo, 
+y la atención de alertas operativas o fiscales.
+
+7. Pre-clasificación e Inspección por IA
+-------------------------------------------------------------------------------
+Definición: Proceso automatizado mediante inteligencia artificial que evalúa en 
+segundo plano si la inversión y empleos proyectados por la empresa solicitante 
+cumplen con los umbrales legales mínimos según su sector operativo.
+
+8. Umbrales Sectoriales de Régimen
+-------------------------------------------------------------------------------
+Definición: Parámetros mínimos obligatorios exigidos por ley según la industria:
+- Servicios BPO: Inversión mín. $150,000 USD | Empleos mín. 15
+- Tecnología: Inversión mín. $100,000 USD | Empleos mín. 8
+- Manufactura: Inversión mín. $500,000 USD | Empleos mín. 30
+
+9. Dashboard de Solicitudes
+-------------------------------------------------------------------------------
+Definición: Módulo principal interactivo para el Analista PROCOMER donde se 
+visualizan los KPIs operativos y la tabla de solicitudes entrantes con su estado 
+y recomendación emitida por la IA.
+
+10. Reporte de Cumplimiento
+-------------------------------------------------------------------------------
+Definición: Módulo de supervisión gerencial que consolida las métricas reales de 
+inversión ejecutada, empleo generado y volumen de exportaciones alcanzados por 
+las empresas operativas en las distintas Zonas Francas.
+
+11. Panel de Alertas y Riesgos
+-------------------------------------------------------------------------------
+Definición: Sistema de monitoreo que detecta automáticamente desviaciones 
+tributarias, incumplimientos en metas de contratación directa o anomalías en 
+contratos comerciales, clasificadas por severidad (Baja, Media, Alta).
+
+12. Registro Inmutable de Auditoría (Audit Log)
+-------------------------------------------------------------------------------
+Definición: Historial cronológico imborrable de todas las acciones del sistema, 
+evaluaciones automáticas de la IA y resoluciones tomadas por los analistas 
+humanos, garantizando la trazabilidad del proceso.
+===============================================================================
