@@ -68,6 +68,7 @@ body {
 .metric-label, .feature-content p, .section-subtitle { color: var(--text-muted); }
 .section-title { color: var(--text-main); }
 .home-footer { background: #173042; border: 0; color: #d7e7e8; }
+.universal-footer { width: 100vw !important; margin: 40px 0 0 !important; border-radius: 0; }
 
 @media (max-width: 760px) {
   .home-header { padding: 14px 18px; flex-wrap: wrap; gap: 14px; }

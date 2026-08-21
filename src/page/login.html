@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Iniciar Sesión</title>
   <link rel="stylesheet" href="../styles/registro-movil.css">
+  <link rel="stylesheet" href="../styles/theme.css">
   <!-- Librería QRCode -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -20,10 +21,10 @@
     <!-- Pestañas para cambiar método de ingreso -->
     <div class="login-tabs">
       <button class="login-tab-btn active" id="tabCredenciales">
-        🔒 Credenciales
+        <span class="material-symbols-outlined" aria-hidden="true">lock</span> Credenciales
       </button>
       <button class="login-tab-btn" id="tabQR">
-        📱 Escaneo QR
+        <span class="material-symbols-outlined" aria-hidden="true">qr_code_scanner</span> Escaneo QR
       </button>
     </div>
 
@@ -39,7 +40,7 @@
           <label for="password">Contraseña</label>
           <div class="password-wrapper">
             <input type="password" id="password" placeholder="••••••••" required autocomplete="new-password">
-            <button type="button" class="btn-toggle-password" data-toggle="#password" title="Mostrar u ocultar contraseña">👁️</button>
+            <button type="button" class="btn-toggle-password" data-toggle="#password" title="Mostrar u ocultar contraseña"><span class="material-symbols-outlined" aria-hidden="true">visibility</span></button>
           </div>
         </div>
 
@@ -65,13 +66,14 @@
         </div>
 
         <a id="linkSimularMovil" href="#" target="_blank" class="btn-secondary" style="font-size:0.8rem; text-decoration:none; text-align:center; margin-top:8px;">
-          🔗 Simular Escaneo Móvil en Nueva Pestaña
+          <span class="material-symbols-outlined" aria-hidden="true">open_in_new</span> Simular Escaneo Móvil en Nueva Pestaña
         </a>
       </div>
     </div>
 
   </div>
 
+  <script type="module" src="../js/modules/theme.js"></script>
   <script type="module" src="../js/modules/app-pc.js"></script>
 </body>
 </html>

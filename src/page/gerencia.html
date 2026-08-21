@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Portal de Gerencia de Cumplimiento</title>
   <link rel="stylesheet" href="../styles/das.css">
+  <link rel="stylesheet" href="../styles/theme.css">
 </head>
 <body>
 
@@ -14,18 +15,18 @@
       <p>Supervisión Normativa, Auditoría y Reportes de Zona Franca (Ley 7210)</p>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
-      <span class="badge badge-approved">📈 Gerencia de Cumplimiento</span>
-      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;">🔴 Cerrar Sesión</button>
+      <span class="badge badge-approved"><span class="material-symbols-outlined" aria-hidden="true">monitoring</span> Gerencia de Cumplimiento</span>
+      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;"><span class="material-symbols-outlined" aria-hidden="true">logout</span> Cerrar Sesión</button>
     </div>
   </header>
 
   <!-- PESTAÑAS EXCLUSIVAS PARA GERENCIA DE CUMPLIMIENTO -->
   <nav class="nav-tabs">
     <button id="tab-cumplimiento" class="nav-tab active" data-target="view-cumplimiento">
-      📈 Reporte de Cumplimiento
+      <span class="material-symbols-outlined" aria-hidden="true">monitoring</span> Reporte de Cumplimiento
     </button>
     <button id="tab-alertas" class="nav-tab" data-target="view-alertas">
-      ⚠️ Panel de Alertas
+      <span class="material-symbols-outlined" aria-hidden="true">warning</span> Panel de Alertas
     </button>
   </nav>
 
@@ -137,43 +138,12 @@
             <!-- Eventos dinámicos -->
           </ul>
         </section>
-    <!-- UNIVERSAL FOOTER -->
-    <footer class="universal-footer">
-      <div class="footer-content">
-        <div class="footer-col">
-          <h4>📈 Portal de Gerencia de Cumplimiento</h4>
-          <p>Supervisión normativa, informes de cumplimiento trimestral y registro inmutable de auditoría (Ley 7210).</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>🔗 Accesos Rápidos</h4>
-          <ul class="footer-links">
-            <li><a href="../../index.html">🏠 Inicio Institucional</a></li>
-            <li><a href="index.html">📊 Dashboard Principal</a></li>
-            <li><a href="analista.html">🕵️ Portal de Analista PROCOMER</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>📞 Contacto & Soporte</h4>
-          <p>📍 San José, Costa Rica</p>
-          <p>📧 gerencia@zofranca.cr</p>
-          <p>☎️ +506 2505-7000 (PROCOMER)</p>
-        </div>
       </div>
-
-      <div class="footer-bottom">
-        <p>© 2026 PROCOMER Costa Rica. Todos los derechos reservados.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Términos</a>
-          <a href="#">Privacidad</a>
-          <a href="#">Ley 7210</a>
-        </div>
-      </div>
-    </footer>
+    </div>
 
   </main>
 
+  <script type="module" src="../js/modules/theme.js"></script>
   <script type="module" src="../js/modules/app.js"></script>
 </body>
 </html>

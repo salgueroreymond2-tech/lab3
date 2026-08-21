@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR Management Platform</title>
   <link rel="stylesheet" href="../styles/das.css">
+  <link rel="stylesheet" href="../styles/theme.css">
 </head>
 <body>
 
@@ -15,23 +16,23 @@
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
       <span class="badge badge-system">IA & Real-Time Auditable</span>
-      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;">🔴 Cerrar Sesión</button>
+      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;"><span class="material-symbols-outlined" aria-hidden="true">logout</span> Cerrar Sesión</button>
     </div>
   </header>
 
   <!-- PESTAÑAS DE NAVEGACIÓN (STITCH SCREENS) -->
   <nav class="nav-tabs">
     <button id="tab-solicitud" class="nav-tab active" data-target="view-solicitud">
-      📝 Formulario de Solicitud
+      <span class="material-symbols-outlined" aria-hidden="true">edit_document</span> Formulario de Solicitud
     </button>
     <button id="tab-dashboard" class="nav-tab" data-target="view-dashboard">
-      📊 Dashboard de Solicitudes
+      <span class="material-symbols-outlined" aria-hidden="true">dashboard</span> Dashboard de Solicitudes
     </button>
     <button id="tab-cumplimiento" class="nav-tab" data-target="view-cumplimiento">
-      📈 Reporte de Cumplimiento
+      <span class="material-symbols-outlined" aria-hidden="true">monitoring</span> Reporte de Cumplimiento
     </button>
     <button id="tab-alertas" class="nav-tab" data-target="view-alertas">
-      ⚠️ Panel de Alertas
+      <span class="material-symbols-outlined" aria-hidden="true">warning</span> Panel de Alertas
     </button>
   </nav>
 
@@ -244,46 +245,7 @@
           </ul>
         </section>
       </div>
-    <!-- UNIVERSAL FOOTER -->
-    <footer class="universal-footer">
-      <div class="footer-content">
-        <div class="footer-col">
-          <h4>🏢 ZoFranca CR Management Platform</h4>
-          <p>Plataforma oficial de gestión, evaluación con IA y trazabilidad auditada en tiempo real para el Régimen de Zonas Francas en Costa Rica (Ley 7210).</p>
-          <div style="margin-top: 10px;">
-            <span class="badge badge-system" style="font-size:0.75rem;">PROCOMER & Ministerio de Comercio Exterior</span>
-          </div>
-        </div>
-
-        <div class="footer-col">
-          <h4>🔗 Módulos del Sistema</h4>
-          <ul class="footer-links">
-            <li><a href="../../index.html">🏠 Inicio Institucional</a></li>
-            <li><a href="login.html">🔒 Iniciar Sesión / Autenticación</a></li>
-            <li><a href="analista.html">🕵️ Portal de Analista PROCOMER</a></li>
-            <li><a href="gerencia.html">📈 Gerencia de Cumplimiento</a></li>
-            <li><a href="registro.html">📝 Registro de Empresa</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>📞 Contacto & Soporte</h4>
-          <p>📍 San José, Costa Rica</p>
-          <p>📧 soporte@zofranca.cr</p>
-          <p>☎️ +506 2505-7000 (PROCOMER)</p>
-          <p style="margin-top: 6px; font-size:0.8rem; color: var(--primary-color);">Atención: L-V 8:00 AM - 5:00 PM</p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© 2026 PROCOMER — Promotora del Comercio Exterior de Costa Rica. Todos los derechos reservados.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Términos de Servicio</a>
-          <a href="#">Política de Privacidad</a>
-          <a href="#">Reglamento Ley 7210</a>
-        </div>
-      </div>
-    </footer>
+    </div>
 
   </main>
 
@@ -291,7 +253,7 @@
   <div id="modalAnalisisIA" class="modal-overlay hidden">
     <div class="modal-content">
       <div class="modal-header">
-        <h3 id="modalTitle">🤖 Detalle con Análisis IA</h3>
+        <h3 id="modalTitle"><span class="material-symbols-outlined" aria-hidden="true">smart_toy</span> Detalle con Análisis IA</h3>
         <button class="btn btn-secondary btn-sm" onclick="cerrarModalIA()">✕ Cerrar</button>
       </div>
       <div class="modal-body">
@@ -304,10 +266,10 @@
         <div>
           <h4>Checklist de Cumplimiento — Ley 7210</h4>
           <ul class="checklist" style="margin-top:10px;">
-            <li class="checklist-item">✅ Inversión Mínima Sectorial ($150,000+ USD)</li>
-            <li class="checklist-item">✅ Generación de Empleo Directo Mínimo</li>
-            <li class="checklist-item">✅ Ubicación en Zona Franca Autorizada</li>
-            <li class="checklist-item">⚠️ Verificación de Documentación Legal Pendiente</li>
+            <li class="checklist-item"><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> Inversión Mínima Sectorial ($150,000+ USD)</li>
+            <li class="checklist-item"><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> Generación de Empleo Directo Mínimo</li>
+            <li class="checklist-item"><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> Ubicación en Zona Franca Autorizada</li>
+            <li class="checklist-item"><span class="material-symbols-outlined" aria-hidden="true">warning</span> Verificación de Documentación Legal Pendiente</li>
           </ul>
         </div>
 
@@ -318,14 +280,15 @@
 
         <div style="display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
           <button class="btn btn-secondary" onclick="cerrarModalIA()">Cerrar</button>
-          <button class="btn btn-secondary" id="btnModalGuardar">💾 Guardar Observaciones</button>
-          <button class="btn btn-danger" id="btnModalRechazar">✖ Cancelar / Rechazar Solicitud</button>
+          <button class="btn btn-secondary" id="btnModalGuardar"><span class="material-symbols-outlined" aria-hidden="true">save</span> Guardar Observaciones</button>
+          <button class="btn btn-danger" id="btnModalRechazar"><span class="material-symbols-outlined" aria-hidden="true">cancel</span> Cancelar / Rechazar Solicitud</button>
           <button class="btn btn-success" id="btnModalAprobar">Aprobar Solicitud</button>
         </div>
       </div>
     </div>
   </div>
 
+  <script type="module" src="../js/modules/theme.js"></script>
   <script type="module" src="../js/modules/app.js"></script>
 </body>
 </html>

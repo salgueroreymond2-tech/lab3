@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Portal de Empresa Solicitante</title>
   <link rel="stylesheet" href="../styles/das.css">
+  <link rel="stylesheet" href="../styles/theme.css">
 </head>
 <body>
 
@@ -14,8 +15,8 @@
       <p>Formulario Oficial de Solicitud de Régimen de Zona Franca (Costa Rica)</p>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
-      <span class="badge badge-approved">🏢 Empresa Solicitante</span>
-      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;">🔴 Cerrar Sesión</button>
+      <span class="badge badge-approved"><span class="material-symbols-outlined" aria-hidden="true">business</span> Empresa Solicitante</span>
+      <button id="btnLogout" class="btn btn-secondary btn-sm" style="cursor:pointer;"><span class="material-symbols-outlined" aria-hidden="true">logout</span> Cerrar Sesión</button>
     </div>
   </header>
 
@@ -72,40 +73,9 @@
       </form>
     </section>
 
-    <!-- UNIVERSAL FOOTER -->
-    <footer class="universal-footer">
-      <div class="footer-content">
-        <div class="footer-col">
-          <h4>🏢 ZoFranca CR — Portal Solicitante</h4>
-          <p>Solicitud oficial de ingreso al Régimen de Zonas Francas. Evaluación asistida por IA en segundo plano.</p>
-        </div>
-
-        <div class="footer-col">
-          <h4>🔗 Enlaces</h4>
-          <ul class="footer-links">
-            <li><a href="../../index.html">🏠 Inicio Institucional</a></li>
-            <li><a href="login.html">🔒 Cerrar Sesión</a></li>
-          </ul>
-        </div>
-
-        <div class="footer-col">
-          <h4>📞 Soporte</h4>
-          <p>📍 San José, Costa Rica</p>
-          <p>📧 soporte@zofranca.cr</p>
-        </div>
-      </div>
-
-      <div class="footer-bottom">
-        <p>© 2026 PROCOMER Costa Rica.</p>
-        <div class="footer-bottom-links">
-          <a href="#">Privacidad</a>
-          <a href="#">Ley 7210</a>
-        </div>
-      </div>
-    </footer>
-
   </main>
 
+  <script type="module" src="../js/modules/theme.js"></script>
   <script type="module" src="../js/modules/app.js"></script>
 </body>
 </html>

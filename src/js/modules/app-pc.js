@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (input) {
         const isPassword = input.type === "password";
         input.type = isPassword ? "text" : "password";
-        btn.textContent = isPassword ? "🙈" : "👁️";
+        btn.innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">${isPassword ? "visibility_off" : "visibility"}</span>`;
       }
     });
   });

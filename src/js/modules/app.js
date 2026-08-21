@@ -153,8 +153,9 @@ function initRoleNavigation() {
   } else if (role === "admin" || role === "gerente") {
     // Visibilidad Global (Lectura): Tanto Analista (admin) como Gerente (gerente) ven todos los módulos de consulta/reportes
     if (tabSolicitud) {
-      tabSolicitud.classList.remove("hidden");
-      tabSolicitud.style.display = "inline-flex";
+      const isAnalyst = role === "admin";
+      tabSolicitud.classList.toggle("hidden", isAnalyst);
+      tabSolicitud.style.display = isAnalyst ? "none" : "inline-flex";
     }
     if (tabDashboard) {
       tabDashboard.classList.remove("hidden");
@@ -177,7 +178,7 @@ function initRoleNavigation() {
   }
 }
 
-// Configuración del Botón '🔴 Cerrar Sesión'
+// Configuración del botón de cierre de sesión
 function setupLogout() {
   const btnLogout = document.getElementById("btnLogout");
   if (btnLogout) {
@@ -206,6 +207,12 @@ function initTabs() {
           v.classList.add("hidden");
         }
       });
+
+      const user = JSON.parse(localStorage.getItem("zofranca_user") || "{}");
+      const footer = document.querySelector(".universal-footer");
+      if (footer) {
+        footer.classList.toggle("hidden", user.role === "admin" && targetId === "view-alertas");
+      }
     });
   });
 }
@@ -363,7 +370,7 @@ window.abrirModalIA = function(solicitudId) {
 
   const currentRole = getCurrentUserRole();
 
-  document.getElementById("modalTitle").textContent = `🤖 Análisis IA — ${item.empresaNombre} (${item.id})`;
+  document.getElementById("modalTitle").innerHTML = `<span class="material-symbols-outlined" aria-hidden="true">smart_toy</span> Análisis IA — ${item.empresaNombre} (${item.id})`;
   document.getElementById("modalScore").textContent = `${(item.evaluacionIA.score * 100).toFixed(0)}%`;
   
   const badgeRec = document.getElementById("modalRecomendacion");

@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Gerencia de Cumplimiento</title>
   <link rel="stylesheet" href="../styles/das.css">
+  <link rel="stylesheet" href="../styles/theme.css">
 </head>
 <body>
 
   <header class="app-header">
     <div class="logo-container">
-      <h1>🇨🇷 ZoFranca CR</h1>
+      <h1><span class="material-symbols-outlined" aria-hidden="true">flag</span> ZoFranca CR</h1>
       <p>Portal Gerencia de Cumplimiento — Costa Rica Free Trade Zone Operations</p>
     </div>
     <span class="badge badge-system">Acceso Restringido — Gerencia</span>
@@ -19,10 +20,10 @@
   <!-- PESTAÑAS DE NAVEGACIÓN (Solo Reporte de Cumplimiento y Panel de Alertas) -->
   <nav class="nav-tabs">
     <button class="nav-tab active" data-target="view-cumplimiento">
-      📈 Reporte de Cumplimiento
+      <span class="material-symbols-outlined" aria-hidden="true">monitoring</span> Reporte de Cumplimiento
     </button>
     <button class="nav-tab" data-target="view-alertas">
-      ⚠️ Panel de Alertas
+      <span class="material-symbols-outlined" aria-hidden="true">warning</span> Panel de Alertas
     </button>
   </nav>
 
@@ -139,6 +140,7 @@
 
   </main>
 
+  <script type="module" src="../js/modules/theme.js"></script>
   <script type="module" src="../js/modules/app.js"></script>
 </body>
 </html>
