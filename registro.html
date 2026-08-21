@@ -85,10 +85,10 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const form = document.getElementById("formRegistroEmpresa");
-      const alertBanner = document.getElementById("alertBanner");
 
       form.addEventListener("submit", (e) => {
         e.preventDefault();
@@ -134,17 +134,24 @@
         empresasRegistradas.push(nuevaEmpresa);
         localStorage.setItem("empresas_registradas", JSON.stringify(empresasRegistradas));
 
-        mostrarAlerta("¡Cuenta registrada con éxito! Redirigiendo al inicio de sesión...", "success");
-
-        setTimeout(() => {
+        Swal.fire({
+          icon: 'success',
+          title: '¡Registro Exitoso!',
+          text: '¡Cuenta registrada con éxito! Redirigiendo al inicio de sesión...',
+          showConfirmButton: false,
+          timer: 1800
+        }).then(() => {
           window.location.href = "login.html";
-        }, 1500);
+        });
       });
 
       function mostrarAlerta(msg, tipo) {
-        alertBanner.textContent = msg;
-        alertBanner.className = `alert-banner ${tipo === "success" ? "alert-success" : "alert-error"}`;
-        alertBanner.style.display = "block";
+        Swal.fire({
+          icon: tipo === "success" ? "success" : "error",
+          title: tipo === "success" ? "¡Éxito!" : "Atención",
+          text: msg,
+          confirmButtonColor: "#0056b3"
+        });
       }
     });
   </script>

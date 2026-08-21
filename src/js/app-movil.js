@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   const token = urlParams.get("token");
@@ -28,7 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
         document.body.innerHTML = "<h2 style='text-align:center; padding: 2rem;'>¡Acceso confirmado! Puedes continuar en la pantalla de tu computadora.</h2>";
       }
     } catch (err) {
-      alert("Error al conectar con el servidor. Intenta de nuevo.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error de Conexión',
+        text: 'Error al conectar con el servidor. Intenta de nuevo.',
+        confirmButtonColor: '#0056b3'
+      });
     }
   });
 });

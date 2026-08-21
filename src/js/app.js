@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 /**
  * ZoFranca CR Management Platform - App Logic
  */
@@ -221,7 +223,12 @@ async function handleSolicitudSubmit(event) {
   const form = event.target;
   
   if (!form.checkValidity()) {
-    alert("Por favor complete todos los campos requeridos.");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Campos Incompletos',
+      text: 'Por favor complete todos los campos requeridos.',
+      confirmButtonColor: '#0056b3'
+    });
     return;
   }
 
@@ -254,7 +261,12 @@ async function handleSolicitudSubmit(event) {
     if (tabDash && !tabDash.classList.contains("hidden")) {
       tabDash.click();
     } else {
-      alert("¡Solicitud enviada con éxito! Su proyecto ha sido ingresado para evaluación.");
+      Swal.fire({
+        icon: 'success',
+        title: '¡Solicitud Enviada!',
+        text: 'Su proyecto ha sido ingresado para evaluación con éxito.',
+        confirmButtonColor: '#0056b3'
+      });
     }
   } catch (error) {
     console.error("Error al procesar solicitud:", error);
@@ -361,7 +373,12 @@ window.abrirModalIA = function(solicitudId) {
       btnGuardar.style.display = "inline-block";
       btnGuardar.onclick = function() {
         guardarObservaciones();
-        alert("¡Observaciones técnicas del analista guardadas con éxito!");
+        Swal.fire({
+          icon: 'success',
+          title: '¡Observaciones Guardadas!',
+          text: 'Las observaciones técnicas del analista se guardaron con éxito.',
+          confirmButtonColor: '#0056b3'
+        });
       };
     } else {
       btnGuardar.style.display = "none";
