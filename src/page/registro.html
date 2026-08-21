@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Registro de Empresa Solicitante</title>
-  <link rel="stylesheet" href="./src/styles/registro-movil.css">
+  <link rel="stylesheet" href="../styles/registro-movil.css">
   <style>
     .alert-banner {
       padding: 12px;
@@ -30,7 +30,7 @@
 
   <div class="login-container" style="max-width: 480px;">
     <div class="login-header">
-      <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 8px;">← Volver al Inicio Institucional</a>
+      <a href="../../index.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 8px;">← Volver al Inicio Institucional</a>
       <h1>ZoFranca CR</h1>
       <p>Registro de Empresa Solicitante (Régimen ZF)</p>
     </div>
@@ -66,12 +66,18 @@
 
       <div class="form-group">
         <label for="password">Contraseña</label>
-        <input type="password" id="password" placeholder="••••••••" required>
+        <div class="password-wrapper">
+          <input type="password" id="password" placeholder="••••••••" required>
+          <button type="button" class="btn-toggle-password" data-toggle="#password" title="Mostrar u ocultar contraseña">👁️</button>
+        </div>
       </div>
 
       <div class="form-group">
         <label for="confirmPassword">Confirmar Contraseña</label>
-        <input type="password" id="confirmPassword" placeholder="••••••••" required>
+        <div class="password-wrapper">
+          <input type="password" id="confirmPassword" placeholder="••••••••" required>
+          <button type="button" class="btn-toggle-password" data-toggle="#confirmPassword" title="Mostrar u ocultar contraseña">👁️</button>
+        </div>
       </div>
 
       <button type="submit" class="btn-primary" style="margin-top: 12px; width: 100%;">
@@ -79,11 +85,41 @@
       </button>
     </form>
 
-    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
-      <span style="color: var(--text-muted);">¿Ya tienes cuenta? </span>
-      <a href="login.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Iniciar Sesión</a>
-    </div>
   </div>
+
+  <!-- UNIVERSAL FOOTER -->
+  <footer class="universal-footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <h4>🏢 ZoFranca CR</h4>
+        <p>Registro oficial de empresas solicitantes al Régimen de Zonas Francas en Costa Rica (Ley 7210).</p>
+      </div>
+
+      <div class="footer-col">
+        <h4>🔗 Accesos Rápidos</h4>
+        <ul class="footer-links">
+          <li><a href="../../index.html">🏠 Inicio Institucional</a></li>
+          <li><a href="login.html">🔒 Iniciar Sesión</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>📞 Contacto & Soporte</h4>
+        <p>📍 San José, Costa Rica</p>
+        <p>📧 soporte@zofranca.cr</p>
+        <p>☎️ +506 2505-7000 (PROCOMER)</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 PROCOMER Costa Rica. Todos los derechos reservados.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Términos</a>
+        <a href="#">Privacidad</a>
+        <a href="#">Ley 7210</a>
+      </div>
+    </div>
+  </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
@@ -141,7 +177,7 @@
           showConfirmButton: false,
           timer: 1800
         }).then(() => {
-          window.location.href = "login.html";
+          window.location.href = "./login.html";
         });
       });
 
@@ -153,6 +189,18 @@
           confirmButtonColor: "#0056b3"
         });
       }
+
+      document.querySelectorAll(".btn-toggle-password").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const targetSelector = btn.getAttribute("data-toggle") || "#password";
+          const input = document.querySelector(targetSelector) || btn.previousElementSibling;
+          if (input) {
+            const isPassword = input.type === "password";
+            input.type = isPassword ? "text" : "password";
+            btn.textContent = isPassword ? "🙈" : "👁️";
+          }
+        });
+      });
     });
   </script>
 </body>

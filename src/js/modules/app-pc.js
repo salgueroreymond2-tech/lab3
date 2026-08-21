@@ -30,6 +30,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Limpiar campos para evitar auto-completado del navegador al recargar
+  if (formCredenciales) {
+    formCredenciales.reset();
+    const clearInputs = () => {
+      const u = document.getElementById("usuario");
+      const p = document.getElementById("password");
+      if (u) u.value = "";
+      if (p) p.value = "";
+    };
+    clearInputs();
+    setTimeout(clearInputs, 100);
+    setTimeout(clearInputs, 300);
+  }
+
   // 2. Ingreso Directo por Formulario de Credenciales
   if (formCredenciales) {
     const USUARIOS_VALIDOS = {
@@ -65,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
           usuario: usuario,
           role: roleEncontrado
         }));
-        window.location.href = "./src/page/index.html";
+        window.location.href = "./index.html";
       } else {
         Swal.fire({
           icon: 'error',
@@ -141,4 +155,17 @@ document.addEventListener("DOMContentLoaded", () => {
       // Servidor mock opcional
     }
   }, 2500);
+
+  // 6. Toggle Ver/Ocultar Contraseña
+  document.querySelectorAll(".btn-toggle-password").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetSelector = btn.getAttribute("data-toggle") || "#password";
+      const input = document.querySelector(targetSelector) || btn.previousElementSibling;
+      if (input) {
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        btn.textContent = isPassword ? "🙈" : "👁️";
+      }
+    });
+  });
 });

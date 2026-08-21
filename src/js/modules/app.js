@@ -20,7 +20,7 @@ const UMBRALES_REGIMEN = {
 document.addEventListener("DOMContentLoaded", () => {
   const userStr = localStorage.getItem("zofranca_user");
   if (!userStr) {
-    window.location.href = "../../login.html";
+    window.location.href = "./login.html";
     return;
   }
 
@@ -183,8 +183,8 @@ function setupLogout() {
   if (btnLogout) {
     btnLogout.addEventListener("click", () => {
       localStorage.removeItem("zofranca_user");
-      // Redirige al login de la raíz (login.html)
-      window.location.href = "../../login.html";
+      // Redirige al login en src/page/login.html
+      window.location.href = "./login.html";
     });
   }
 }
@@ -317,6 +317,33 @@ window.resolverSolicitud = function(solicitudId, nuevoEstado) {
   renderApp();
 };
 
+// Cancelar Solicitud con confirmación SweetAlert2
+window.cancelarSolicitud = function(solicitudId) {
+  const item = State.solicitudes.find(s => s.id === solicitudId);
+  if (!item) return;
+
+  Swal.fire({
+    title: '¿Cancelar Solicitud?',
+    text: `¿Está seguro de que desea cancelar la solicitud ${item.id} de ${item.empresaNombre}?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc3545',
+    cancelButtonColor: '#6c757d',
+    confirmButtonText: 'Sí, cancelar solicitud',
+    cancelButtonText: 'No, mantener'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      resolverSolicitud(solicitudId, 'RECHAZADO');
+      Swal.fire({
+        icon: 'success',
+        title: 'Solicitud Cancelada',
+        text: `La solicitud ${solicitudId} ha sido cancelada con éxito.`,
+        confirmButtonColor: '#0056b3'
+      });
+    }
+  });
+};
+
 // Helper para obtener el usuario actual
 function getCurrentUserRole() {
   const userStr = localStorage.getItem("zofranca_user");
@@ -402,17 +429,12 @@ window.abrirModalIA = function(solicitudId) {
 
   const btnRechazar = document.getElementById("btnModalRechazar");
   if (btnRechazar) {
-    // Rechazo final / Desautorización: Gerente
-    if (currentRole === "gerente") {
-      btnRechazar.style.display = "inline-block";
-      btnRechazar.onclick = function() {
-        guardarObservaciones();
-        resolverSolicitud(item.id, "RECHAZADO");
-        cerrarModalIA();
-      };
-    } else {
-      btnRechazar.style.display = "none";
-    }
+    // Botón de Cancelar / Rechazar Solicitud habilitado para todos los usuarios
+    btnRechazar.style.display = "inline-block";
+    btnRechazar.onclick = function() {
+      cerrarModalIA();
+      cancelarSolicitud(item.id);
+    };
   }
 
   document.getElementById("modalAnalisisIA").classList.remove("hidden");
@@ -441,11 +463,12 @@ function renderApp() {
 
 function renderTable() {
   const tbody = document.getElementById("solicitudesTableBody");
+  if (!tbody) return;
+
+  tbody.innerHTML = "";
+
   const pendingCount = document.getElementById("pendingCount");
   const kpiTotal = document.getElementById("kpiTotal");
-  
-  if (!tbody) return;
-  tbody.innerHTML = "";
 
   const currentRole = getCurrentUserRole();
   
@@ -470,19 +493,18 @@ function renderTable() {
 
     let accionesHtml = `<span class="badge ${estadoBadgeClass}">${sol.estado}</span> `;
     
-    // Botón de ver detalles disponible para lectura de ambos
+    // Botón de ver detalles disponible para lectura
     accionesHtml += `<button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button> `;
 
-    // Acciones de resolución en última instancia (Aprobar/Rechazar) reservadas al Gerente
     if (currentRole === "gerente") {
       if (sol.estado === "PENDIENTE_REVISION") {
         accionesHtml += `
           <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')">Autorizar / Aprobar</button>
-          <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')">Rechazar</button>
+          <button class="btn btn-danger btn-sm" onclick="cancelarSolicitud('${sol.id}')">Cancelar Solicitud</button>
         `;
       } else if (sol.estado === "APROBADO") {
         accionesHtml += `
-          <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')" title="Revocar autorización">Revocar Aprobación</button>
+          <button class="btn btn-danger btn-sm" onclick="cancelarSolicitud('${sol.id}')" title="Revocar autorización">Cancelar Solicitud</button>
         `;
       } else {
         accionesHtml += `
@@ -490,8 +512,16 @@ function renderTable() {
         `;
       }
     } else if (currentRole === "admin") {
-      // Para el Analista (admin): permite emitir/editar dictamen técnico
-      accionesHtml += `<span class="badge badge-system" style="font-size:0.75rem;">Dictamen Técnico</span>`;
+      // Para el Analista (admin): permite ver dictamen técnico y cancelar solicitud
+      accionesHtml += `<span class="badge badge-system" style="font-size:0.75rem;">Dictamen Técnico</span> `;
+      if (sol.estado !== "RECHAZADO") {
+        accionesHtml += `<button class="btn btn-danger btn-sm" onclick="cancelarSolicitud('${sol.id}')">Cancelar Solicitud</button>`;
+      }
+    } else {
+      // Para Solicitante (empresa) u otros roles
+      if (sol.estado !== "RECHAZADO") {
+        accionesHtml += `<button class="btn btn-danger btn-sm" onclick="cancelarSolicitud('${sol.id}')">Cancelar Solicitud</button>`;
+      }
     }
 
     tr.innerHTML = `
