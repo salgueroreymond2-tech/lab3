@@ -335,15 +335,48 @@ window.abrirModalIA = function(solicitudId) {
   badgeRec.className = item.evaluacionIA.cumpleUmbrales ? "badge badge-approved" : "badge badge-alert";
 
   const textAlertas = document.getElementById("modalAlertas");
-  textAlertas.value = item.evaluacionIA.alertas.length > 0 
-    ? item.evaluacionIA.alertas.join("\n") 
-    : "Sin alertas críticas. El proyecto cumple con todos los requisitos de la Ley 7210.";
+  if (textAlertas) {
+    textAlertas.removeAttribute("readonly");
+    textAlertas.value = item.evaluacionIA.observaciones 
+      || (item.evaluacionIA.alertas && item.evaluacionIA.alertas.length > 0 
+          ? item.evaluacionIA.alertas.join("\n") 
+          : "Sin alertas críticas. El proyecto cumple con todos los requisitos de la Ley 7210.");
+  }
+
+  const guardarObservaciones = () => {
+    const textoActual = textAlertas ? textAlertas.value.trim() : "";
+    item.evaluacionIA.observaciones = textoActual;
+    item.evaluacionIA.alertas = textoActual ? textoActual.split("\n").filter(l => l.trim() !== "") : [];
+    saveState();
+    registrarAuditoria("OBSERVACIONES_ACTUALIZADAS", item.id, `Notas guardadas por el analista.`);
+    renderApp();
+  };
+
+  const btnGuardar = document.getElementById("btnModalGuardar");
+  if (btnGuardar) {
+    btnGuardar.onclick = function() {
+      guardarObservaciones();
+      alert("¡Observaciones del analista guardadas con éxito!");
+    };
+  }
 
   const btnAprobar = document.getElementById("btnModalAprobar");
-  btnAprobar.onclick = function() {
-    resolverSolicitud(item.id, "APROBADO");
-    cerrarModalIA();
-  };
+  if (btnAprobar) {
+    btnAprobar.onclick = function() {
+      guardarObservaciones();
+      resolverSolicitud(item.id, "APROBADO");
+      cerrarModalIA();
+    };
+  }
+
+  const btnRechazar = document.getElementById("btnModalRechazar");
+  if (btnRechazar) {
+    btnRechazar.onclick = function() {
+      guardarObservaciones();
+      resolverSolicitud(item.id, "RECHAZADO");
+      cerrarModalIA();
+    };
+  }
 
   document.getElementById("modalAnalisisIA").classList.remove("hidden");
 };
@@ -392,15 +425,27 @@ function renderTable() {
     const iaBadgeClass = sol.evaluacionIA.cumpleUmbrales ? "badge-approved" : "badge-alert";
     const iaTexto = sol.evaluacionIA.cumpleUmbrales ? "CUMPLE UMBRALES" : `ALERTA (${sol.evaluacionIA.alertas.length})`;
 
-    let accionesHtml = `<span class="badge badge-system">${sol.estado}</span>`;
+    let estadoBadgeClass = "badge-system";
+    if (sol.estado === "APROBADO") estadoBadgeClass = "badge-approved";
+    if (sol.estado === "RECHAZADO") estadoBadgeClass = "badge-rejected";
+
+    let accionesHtml = `<span class="badge ${estadoBadgeClass}">${sol.estado}</span> `;
     if (sol.estado === "PENDIENTE_REVISION") {
       accionesHtml = `
         <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle IA</button>
         <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')">Aprobar</button>
         <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')">Rechazar</button>
       `;
+    } else if (sol.estado === "APROBADO") {
+      accionesHtml += `
+        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>
+        <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')" title="Cancelar o rechazar la aceptación">Cancelar Aceptación</button>
+      `;
     } else {
-      accionesHtml += ` <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>`;
+      accionesHtml += `
+        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>
+        <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')" title="Reconsiderar y aprobar">Aprobar</button>
+      `;
     }
 
     tr.innerHTML = `

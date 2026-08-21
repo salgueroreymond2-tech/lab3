@@ -104,12 +104,14 @@
         </div>
 
         <div id="modalAlertasContainer" class="form-group">
-          <label>Observaciones de Riesgo Detectadas:</label>
-          <textarea id="modalAlertas" readonly rows="3" style="width:100%;"></textarea>
+          <label for="modalAlertas">Observaciones de Riesgo / Notas del Analista (Editable):</label>
+          <textarea id="modalAlertas" rows="4" style="width:100%; font-family: inherit; font-size: 0.9rem;" placeholder="Escriba aquí sus observaciones de riesgo o notas de inspección..."></textarea>
         </div>
 
-        <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <div style="display:flex; justify-content:flex-end; gap:10px; flex-wrap:wrap;">
           <button class="btn btn-secondary" onclick="cerrarModalIA()">Cerrar</button>
+          <button class="btn btn-secondary" id="btnModalGuardar">💾 Guardar Observaciones</button>
+          <button class="btn btn-danger" id="btnModalRechazar">✖ Cancelar / Rechazar Solicitud</button>
           <button class="btn btn-success" id="btnModalAprobar">Aprobar Solicitud</button>
         </div>
       </div>
