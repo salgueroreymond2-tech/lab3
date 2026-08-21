@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZoFranca CR — Registro de Empresa Solicitante</title>
+  <link rel="stylesheet" href="./src/styles/registro-movil.css">
+  <style>
+    .alert-banner {
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      text-align: center;
+      display: none;
+    }
+    .alert-success {
+      background: rgba(16, 185, 129, 0.2);
+      border: 1px solid #10b981;
+      color: #10b981;
+    }
+    .alert-error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container" style="max-width: 480px;">
+    <div class="login-header">
+      <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 8px;">← Volver al Inicio Institucional</a>
+      <h1>ZoFranca CR</h1>
+      <p>Registro de Empresa Solicitante (Régimen ZF)</p>
+    </div>
+
+    <div id="alertBanner" class="alert-banner"></div>
+
+    <form id="formRegistroEmpresa">
+      <div class="form-group">
+        <label for="empresaNombre">Nombre de la Empresa / Razón Social</label>
+        <input type="text" id="empresaNombre" placeholder="Ej. TechCorp CR S.A." required>
+      </div>
+
+      <div class="form-group">
+        <label for="cedulaJuridica">Cédula Jurídica</label>
+        <input type="text" id="cedulaJuridica" placeholder="3-101-XXXXXX" required>
+      </div>
+
+      <div class="form-group">
+        <label for="correo">Correo Electrónico Corporativo</label>
+        <input type="email" id="correo" placeholder="ej. contacto@empresa.cr" required>
+      </div>
+
+      <div class="form-group">
+        <label for="tipoEmpresa">Tipo de Empresa</label>
+        <select id="tipoEmpresa" required>
+          <option value="">-- Seleccionar Sector --</option>
+          <option value="Servicios BPO">Servicios BPO / Back-office</option>
+          <option value="Tecnología">Tecnología y Software</option>
+          <option value="Manufactura">Manufactura Avanzada / Dispositivos Médicos</option>
+          <option value="Logística">Logística y Distribución</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" placeholder="••••••••" required>
+      </div>
+
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar Contraseña</label>
+        <input type="password" id="confirmPassword" placeholder="••••••••" required>
+      </div>
+
+      <button type="submit" class="btn-primary" style="margin-top: 12px; width: 100%;">
+        Crear Cuenta de Empresa →
+      </button>
+    </form>
+
+    <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
+      <span style="color: var(--text-muted);">¿Ya tienes cuenta? </span>
+      <a href="login.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Iniciar Sesión</a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("formRegistroEmpresa");
+      const alertBanner = document.getElementById("alertBanner");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const empresaNombre = document.getElementById("empresaNombre").value.trim();
+        const cedulaJuridica = document.getElementById("cedulaJuridica").value.trim();
+        const correo = document.getElementById("correo").value.trim();
+        const tipoEmpresa = document.getElementById("tipoEmpresa").value;
+        const password = document.getElementById("password").value;
+        const confirmPassword = document.getElementById("confirmPassword").value;
+
+        // Validaciones
+        if (!empresaNombre || !cedulaJuridica || !correo || !tipoEmpresa || !password || !confirmPassword) {
+          mostrarAlerta("Por favor complete todos los campos obligatorios.", "error");
+          return;
+        }
+
+        if (password !== confirmPassword) {
+          mostrarAlerta("Las contraseñas no coinciden. Verifíquelas nuevamente.", "error");
+          return;
+        }
+
+        // Obtener empresas registradas
+        let empresasRegistradas = JSON.parse(localStorage.getItem("empresas_registradas") || "[]");
+
+        // Validar si correo ya existe
+        const existe = empresasRegistradas.some(emp => emp.correo.toLowerCase() === correo.toLowerCase());
+        if (existe) {
+          mostrarAlerta("Este correo electrónico ya se encuentra registrado.", "error");
+          return;
+        }
+
+        // Guardar nueva empresa
+        const nuevaEmpresa = {
+          empresaNombre,
+          cedulaJuridica,
+          correo,
+          tipoEmpresa,
+          password,
+          role: "solicitante"
+        };
+
+        empresasRegistradas.push(nuevaEmpresa);
+        localStorage.setItem("empresas_registradas", JSON.stringify(empresasRegistradas));
+
+        mostrarAlerta("¡Cuenta registrada con éxito! Redirigiendo al inicio de sesión...", "success");
+
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1500);
+      });
+
+      function mostrarAlerta(msg, tipo) {
+        alertBanner.textContent = msg;
+        alertBanner.className = `alert-banner ${tipo === "success" ? "alert-success" : "alert-error"}`;
+        alertBanner.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

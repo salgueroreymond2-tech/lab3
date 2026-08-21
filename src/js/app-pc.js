@@ -42,12 +42,30 @@ document.addEventListener("DOMContentLoaded", () => {
       const password = document.getElementById("password").value.trim();
       const perfilSeleccionado = document.getElementById("perfilAcceso").value;
 
-      const cuenta = USUARIOS_VALIDOS[usuario];
+      // 1. Verificar credenciales estáticas por defecto
+      const cuentaEstatica = USUARIOS_VALIDOS[usuario];
 
-      if (cuenta && cuenta.pass === password && cuenta.role === perfilSeleccionado) {
+      // 2. Verificar empresas registradas dinámicamente en localStorage
+      const empresasRegistradas = JSON.parse(localStorage.getItem("empresas_registradas") || "[]");
+      const cuentaDinamica = empresasRegistradas.find(
+        emp => emp.correo.toLowerCase() === usuario.toLowerCase() && emp.password === password
+      );
+
+      let usuarioValido = false;
+      let roleFinal = perfilSeleccionado;
+
+      if (cuentaEstatica && cuentaEstatica.pass === password && cuentaEstatica.role === perfilSeleccionado) {
+        usuarioValido = true;
+        roleFinal = cuentaEstatica.role;
+      } else if (cuentaDinamica && perfilSeleccionado === "solicitante") {
+        usuarioValido = true;
+        roleFinal = "solicitante";
+      }
+
+      if (usuarioValido) {
         localStorage.setItem("zofranca_user", JSON.stringify({
           usuario: usuario,
-          role: perfilSeleccionado
+          role: roleFinal
         }));
         window.location.href = "./src/page/index.html";
       } else {

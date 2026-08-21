@@ -18,7 +18,7 @@ const UMBRALES_REGIMEN = {
 document.addEventListener("DOMContentLoaded", () => {
   const userStr = localStorage.getItem("zofranca_user");
   if (!userStr) {
-    window.location.href = "../../index.html";
+    window.location.href = "../../login.html";
     return;
   }
 
@@ -198,8 +198,8 @@ function setupLogout() {
   if (btnLogout) {
     btnLogout.addEventListener("click", () => {
       localStorage.removeItem("zofranca_user");
-      // Redirige al login de la raíz (funciona desde /src/page/...)
-      window.location.href = "../../index.html";
+      // Redirige al login de la raíz (login.html)
+      window.location.href = "../../login.html";
     });
   }
 }
