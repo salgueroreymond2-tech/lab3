@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ZoFranca CR — Registro de Empresa Solicitante</title>
-  <link rel="stylesheet" href="./src/styles/registro-movil.css">
+  <link rel="stylesheet" href="../styles/registro-movil.css">
   <style>
     .alert-banner {
       padding: 12px;
@@ -30,7 +30,7 @@
 
   <div class="login-container" style="max-width: 480px;">
     <div class="login-header">
-      <a href="index.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 8px;">← Volver al Inicio Institucional</a>
+      <a href="../../index.html" style="color: var(--primary-color); text-decoration: none; font-size: 0.85rem; font-weight: 600; display: inline-block; margin-bottom: 8px;">← Volver al Inicio Institucional</a>
       <h1>ZoFranca CR</h1>
       <p>Registro de Empresa Solicitante (Régimen ZF)</p>
     </div>
@@ -81,7 +81,7 @@
 
     <div style="text-align: center; margin-top: 20px; font-size: 0.9rem;">
       <span style="color: var(--text-muted);">¿Ya tienes cuenta? </span>
-      <a href="login.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Iniciar Sesión</a>
+      <a href="./login.html" style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Iniciar Sesión</a>
     </div>
   </div>
 
@@ -137,7 +137,7 @@
         mostrarAlerta("¡Cuenta registrada con éxito! Redirigiendo al inicio de sesión...", "success");
 
         setTimeout(() => {
-          window.location.href = "login.html";
+          window.location.href = "./login.html";
         }, 1500);
       });
 

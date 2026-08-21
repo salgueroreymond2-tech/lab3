@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
           usuario: usuario,
           role: roleEncontrado
         }));
-        window.location.href = "./src/page/index.html";
+        window.location.href = "./index.html";
       } else {
         alert("Credenciales incorrectas. Por favor, verifica tu correo y contraseña.");
       }
