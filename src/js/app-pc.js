@@ -40,36 +40,32 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
       const usuario = document.getElementById("usuario").value.trim();
       const password = document.getElementById("password").value.trim();
-      const perfilSeleccionado = document.getElementById("perfilAcceso").value;
 
-      // 1. Verificar credenciales estáticas por defecto
+      // 1. Buscar en cuentas por defecto (base de datos simulada)
       const cuentaEstatica = USUARIOS_VALIDOS[usuario];
 
-      // 2. Verificar empresas registradas dinámicamente en localStorage
+      // 2. Buscar en empresas registradas en localStorage
       const empresasRegistradas = JSON.parse(localStorage.getItem("empresas_registradas") || "[]");
       const cuentaDinamica = empresasRegistradas.find(
         emp => emp.correo.toLowerCase() === usuario.toLowerCase() && emp.password === password
       );
 
-      let usuarioValido = false;
-      let roleFinal = perfilSeleccionado;
+      let roleEncontrado = null;
 
-      if (cuentaEstatica && cuentaEstatica.pass === password && cuentaEstatica.role === perfilSeleccionado) {
-        usuarioValido = true;
-        roleFinal = cuentaEstatica.role;
-      } else if (cuentaDinamica && perfilSeleccionado === "solicitante") {
-        usuarioValido = true;
-        roleFinal = "solicitante";
+      if (cuentaEstatica && cuentaEstatica.pass === password) {
+        roleEncontrado = cuentaEstatica.role;
+      } else if (cuentaDinamica) {
+        roleEncontrado = cuentaDinamica.role || "solicitante";
       }
 
-      if (usuarioValido) {
+      if (roleEncontrado) {
         localStorage.setItem("zofranca_user", JSON.stringify({
           usuario: usuario,
-          role: roleFinal
+          role: roleEncontrado
         }));
         window.location.href = "./src/page/index.html";
       } else {
-        alert("Credenciales incorrectas o el perfil seleccionado no corresponde al usuario ingresado.");
+        alert("Credenciales incorrectas. Por favor, verifica tu correo y contraseña.");
       }
     });
   }

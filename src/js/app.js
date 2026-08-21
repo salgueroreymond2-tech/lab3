@@ -108,7 +108,7 @@ function saveState() {
   localStorage.setItem("procomer_logs", JSON.stringify(State.logs));
 }
 
-// Control de Visibilidad de Pestañas por Rol (localStorage.getItem('zofranca_user'))
+// Control de Visibilidad de Pestañas y Permisos por Rol (localStorage.getItem('zofranca_user'))
 function initRoleNavigation() {
   const userStr = localStorage.getItem("zofranca_user");
   let role = "solicitante";
@@ -148,15 +148,15 @@ function initRoleNavigation() {
 
     if (tabSolicitud) tabSolicitud.click();
 
-  } else if (role === "gerente") {
-    // Gerencia de Cumplimiento: Solo debe ver 'Reporte de Cumplimiento' y 'Panel de Alertas'
+  } else if (role === "admin" || role === "gerente") {
+    // Visibilidad Global (Lectura): Tanto Analista (admin) como Gerente (gerente) ven todos los módulos de consulta/reportes
     if (tabSolicitud) {
-      tabSolicitud.classList.add("hidden");
-      tabSolicitud.style.display = "none";
+      tabSolicitud.classList.remove("hidden");
+      tabSolicitud.style.display = "inline-flex";
     }
     if (tabDashboard) {
-      tabDashboard.classList.add("hidden");
-      tabDashboard.style.display = "none";
+      tabDashboard.classList.remove("hidden");
+      tabDashboard.style.display = "inline-flex";
     }
     if (tabCumplimiento) {
       tabCumplimiento.classList.remove("hidden");
@@ -167,28 +167,11 @@ function initRoleNavigation() {
       tabAlertas.style.display = "inline-flex";
     }
 
-    if (tabCumplimiento) tabCumplimiento.click();
-
-  } else if (role === "admin") {
-    // Analista PROCOMER (admin): Solo debe ver 'Dashboard de Solicitudes'
-    if (tabSolicitud) {
-      tabSolicitud.classList.add("hidden");
-      tabSolicitud.style.display = "none";
+    if (role === "gerente" && tabCumplimiento) {
+      tabCumplimiento.click();
+    } else if (tabDashboard) {
+      tabDashboard.click();
     }
-    if (tabDashboard) {
-      tabDashboard.classList.remove("hidden");
-      tabDashboard.style.display = "inline-flex";
-    }
-    if (tabCumplimiento) {
-      tabCumplimiento.classList.add("hidden");
-      tabCumplimiento.style.display = "none";
-    }
-    if (tabAlertas) {
-      tabAlertas.classList.add("hidden");
-      tabAlertas.style.display = "none";
-    }
-
-    if (tabDashboard) tabDashboard.click();
   }
 }
 
@@ -322,10 +305,24 @@ window.resolverSolicitud = function(solicitudId, nuevoEstado) {
   renderApp();
 };
 
+// Helper para obtener el usuario actual
+function getCurrentUserRole() {
+  const userStr = localStorage.getItem("zofranca_user");
+  if (!userStr) return "solicitante";
+  try {
+    const user = JSON.parse(userStr);
+    return user.role || "solicitante";
+  } catch (e) {
+    return "solicitante";
+  }
+}
+
 // Modal Detalle IA
 window.abrirModalIA = function(solicitudId) {
   const item = State.solicitudes.find(s => s.id === solicitudId);
   if (!item) return;
+
+  const currentRole = getCurrentUserRole();
 
   document.getElementById("modalTitle").textContent = `🤖 Análisis IA — ${item.empresaNombre} (${item.id})`;
   document.getElementById("modalScore").textContent = `${(item.evaluacionIA.score * 100).toFixed(0)}%`;
@@ -336,7 +333,12 @@ window.abrirModalIA = function(solicitudId) {
 
   const textAlertas = document.getElementById("modalAlertas");
   if (textAlertas) {
-    textAlertas.removeAttribute("readonly");
+    // El analista puede editar observaciones técnicas; gerente solo lectura o edición de autorización
+    if (currentRole === "admin") {
+      textAlertas.removeAttribute("readonly");
+    } else {
+      textAlertas.setAttribute("readonly", "true");
+    }
     textAlertas.value = item.evaluacionIA.observaciones 
       || (item.evaluacionIA.alertas && item.evaluacionIA.alertas.length > 0 
           ? item.evaluacionIA.alertas.join("\n") 
@@ -348,34 +350,52 @@ window.abrirModalIA = function(solicitudId) {
     item.evaluacionIA.observaciones = textoActual;
     item.evaluacionIA.alertas = textoActual ? textoActual.split("\n").filter(l => l.trim() !== "") : [];
     saveState();
-    registrarAuditoria("OBSERVACIONES_ACTUALIZADAS", item.id, `Notas guardadas por el analista.`);
+    registrarAuditoria("OBSERVACIONES_ACTUALIZADAS", item.id, `Notas guardadas por ${currentRole === "admin" ? "Analista" : "Gerente"}.`);
     renderApp();
   };
 
   const btnGuardar = document.getElementById("btnModalGuardar");
   if (btnGuardar) {
-    btnGuardar.onclick = function() {
-      guardarObservaciones();
-      alert("¡Observaciones del analista guardadas con éxito!");
-    };
+    // Botón de guardar observaciones visible para Analista (admin)
+    if (currentRole === "admin") {
+      btnGuardar.style.display = "inline-block";
+      btnGuardar.onclick = function() {
+        guardarObservaciones();
+        alert("¡Observaciones técnicas del analista guardadas con éxito!");
+      };
+    } else {
+      btnGuardar.style.display = "none";
+    }
   }
 
   const btnAprobar = document.getElementById("btnModalAprobar");
   if (btnAprobar) {
-    btnAprobar.onclick = function() {
-      guardarObservaciones();
-      resolverSolicitud(item.id, "APROBADO");
-      cerrarModalIA();
-    };
+    // Autorización final (Aprobar en última instancia / firmar): Gerente
+    if (currentRole === "gerente") {
+      btnAprobar.style.display = "inline-block";
+      btnAprobar.onclick = function() {
+        guardarObservaciones();
+        resolverSolicitud(item.id, "APROBADO");
+        cerrarModalIA();
+      };
+    } else {
+      btnAprobar.style.display = "none";
+    }
   }
 
   const btnRechazar = document.getElementById("btnModalRechazar");
   if (btnRechazar) {
-    btnRechazar.onclick = function() {
-      guardarObservaciones();
-      resolverSolicitud(item.id, "RECHAZADO");
-      cerrarModalIA();
-    };
+    // Rechazo final / Desautorización: Gerente
+    if (currentRole === "gerente") {
+      btnRechazar.style.display = "inline-block";
+      btnRechazar.onclick = function() {
+        guardarObservaciones();
+        resolverSolicitud(item.id, "RECHAZADO");
+        cerrarModalIA();
+      };
+    } else {
+      btnRechazar.style.display = "none";
+    }
   }
 
   document.getElementById("modalAnalisisIA").classList.remove("hidden");
@@ -409,6 +429,8 @@ function renderTable() {
   
   if (!tbody) return;
   tbody.innerHTML = "";
+
+  const currentRole = getCurrentUserRole();
   
   const pendientes = State.solicitudes.filter(s => s.estado === "PENDIENTE_REVISION").length;
   if (pendingCount) pendingCount.textContent = `${pendientes} PENDIENTES`;
@@ -430,22 +452,29 @@ function renderTable() {
     if (sol.estado === "RECHAZADO") estadoBadgeClass = "badge-rejected";
 
     let accionesHtml = `<span class="badge ${estadoBadgeClass}">${sol.estado}</span> `;
-    if (sol.estado === "PENDIENTE_REVISION") {
-      accionesHtml = `
-        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle IA</button>
-        <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')">Aprobar</button>
-        <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')">Rechazar</button>
-      `;
-    } else if (sol.estado === "APROBADO") {
-      accionesHtml += `
-        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>
-        <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')" title="Cancelar o rechazar la aceptación">Cancelar Aceptación</button>
-      `;
-    } else {
-      accionesHtml += `
-        <button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button>
-        <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')" title="Reconsiderar y aprobar">Aprobar</button>
-      `;
+    
+    // Botón de ver detalles disponible para lectura de ambos
+    accionesHtml += `<button class="btn btn-secondary btn-sm" onclick="abrirModalIA('${sol.id}')">Ver Detalle</button> `;
+
+    // Acciones de resolución en última instancia (Aprobar/Rechazar) reservadas al Gerente
+    if (currentRole === "gerente") {
+      if (sol.estado === "PENDIENTE_REVISION") {
+        accionesHtml += `
+          <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')">Autorizar / Aprobar</button>
+          <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')">Rechazar</button>
+        `;
+      } else if (sol.estado === "APROBADO") {
+        accionesHtml += `
+          <button class="btn btn-danger btn-sm" onclick="resolverSolicitud('${sol.id}', 'RECHAZADO')" title="Revocar autorización">Revocar Aprobación</button>
+        `;
+      } else {
+        accionesHtml += `
+          <button class="btn btn-success btn-sm" onclick="resolverSolicitud('${sol.id}', 'APROBADO')" title="Reconsiderar y autorizar">Reconsiderar Autorización</button>
+        `;
+      }
+    } else if (currentRole === "admin") {
+      // Para el Analista (admin): permite emitir/editar dictamen técnico
+      accionesHtml += `<span class="badge badge-system" style="font-size:0.75rem;">Dictamen Técnico</span>`;
     }
 
     tr.innerHTML = `
