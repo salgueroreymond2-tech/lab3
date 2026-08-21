@@ -1,3 +1,5 @@
+import Swal from 'sweetalert2';
+
 document.addEventListener("DOMContentLoaded", () => {
   const sessionToken = "SESION-" + Math.random().toString(36).substring(2, 9);
   
@@ -65,7 +67,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }));
         window.location.href = "./index.html";
       } else {
-        alert("Credenciales incorrectas. Por favor, verifica tu correo y contraseña.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Credenciales Incorrectas',
+          text: 'Por favor, verifica tu correo y contraseña.',
+          confirmButtonColor: '#0056b3'
+        });
       }
     });
   }
@@ -121,8 +128,14 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(checkSessionInterval);
         const user = data[0];
         localStorage.setItem("zofranca_user", JSON.stringify(user));
-        alert(`¡Autenticación móvil confirmada! Bienvenido ${user.nombre}`);
-        window.location.href = "src/page/index.html";
+        Swal.fire({
+          icon: 'success',
+          title: '¡Autenticación Móvil Confirmada!',
+          text: `Bienvenido ${user.nombre}`,
+          confirmButtonColor: '#0056b3'
+        }).then(() => {
+          window.location.href = "src/page/index.html";
+        });
       }
     } catch (err) {
       // Servidor mock opcional
