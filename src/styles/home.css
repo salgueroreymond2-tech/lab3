@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+
+:root {
+  --bg-color: #f3f7f9;
+  --card-bg: #ffffff;
+  --surface-color: #e8f3f4;
+  --primary-color: #007f86;
+  --primary-hover: #005f68;
+  --accent-color: #f5b335;
+  --text-main: #173042;
+  --text-muted: #637985;
+  --border-color: #d6e3e5;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: #f3f7f9;
+  color: var(--text-main);
+}
+
+.home-header {
+  background: rgba(255, 255, 255, .94);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: 0 4px 20px rgba(23, 48, 66, .06);
+}
+
+.brand-title, .hero-title, .section-title, .feature-content h3, .metric-number {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.brand-title { color: var(--primary-color); }
+.brand-title span { color: var(--text-muted); }
+.nav-menu a { color: var(--text-main); }
+.nav-menu a:hover { color: var(--primary-color); }
+
+.btn-login, .btn-cta {
+  background: var(--primary-color);
+  color: #fff;
+  box-shadow: 0 8px 18px rgba(0, 127, 134, .18);
+}
+.btn-login:hover, .btn-cta:hover { background: var(--primary-hover); }
+.btn-register { color: var(--text-main); border-color: var(--border-color); }
+.btn-register:hover { border-color: var(--primary-color); background: var(--surface-color); }
+
+.hero-container {
+  min-height: 76vh;
+  background-position: center;
+}
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(9, 42, 53, .68), rgba(9, 42, 53, .84));
+}
+.hero-badge {
+  background: rgba(245, 179, 53, .16);
+  color: #ffe09a;
+  border-color: rgba(245, 179, 53, .45);
+}
+.hero-title { color: #fff; background: none; -webkit-text-fill-color: initial; }
+.hero-subtitle { color: #d7e7e8; }
+
+.metrics-section { margin-top: -38px; }
+.metric-card, .feature-card {
+  background: rgba(255, 255, 255, .96);
+  border-color: var(--border-color);
+  box-shadow: 0 16px 32px rgba(23, 48, 66, .08);
+}
+.metric-card:hover, .feature-card:hover { border-color: #89c5c4; }
+.metric-number, .feature-content h3 { color: var(--primary-color); }
+.metric-label, .feature-content p, .section-subtitle { color: var(--text-muted); }
+.section-title { color: var(--text-main); }
+.home-footer { background: #173042; border: 0; color: #d7e7e8; }
+
+@media (max-width: 760px) {
+  .home-header { padding: 14px 18px; flex-wrap: wrap; gap: 14px; }
+  .nav-menu { display: none; }
+  .header-buttons { margin-left: auto; }
+  .hero-container { min-height: 72vh; padding: 80px 18px 70px; }
+  .hero-title { font-size: 2.35rem; }
+  .hero-subtitle { font-size: 1rem; }
+}
